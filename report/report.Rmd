@@ -1,0 +1,103 @@
+---
+title: "DATA2902 Report"
+author: "Matty Hempstead 490424010"
+subtitle: "Analysis of Class Survey"
+date: "23/09/2020"
+output: 
+  html_document:
+      code_folding: hide
+      df_print: paged
+      fig_caption: yes
+      number_sections: yes
+      self_contained: yes
+      toc: yes
+      toc_float: yes
+---
+
+```{r setup, include=FALSE}
+library(readr)
+
+
+```
+
+# Introduction
+A class survey was performed among DATA2X02 students...
+
+```{r, output=F}
+data = readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTf8eDSN_2QbMTyVvO5bdYKZSEEF2bufDdYnLnL-TsR8LM-6x-xu1cxmDMohlbLrkMJn9DE7EG7pg5P/pub?gid=1724783278&single=true&output=csv", col_types=cols())
+
+# Rename all columns
+colnames(data) = c("timestamp", "covid_test", "gender", "postcode", "dentist", "university_hours", "social_media", "dog_or_cat", "live_with_parents", "exercise_hours", "eye_colour", "asthma", "employment_hours", "favourite_season", "shoe_size", "height", "floss", "glasses_or_contacts", "dominant_hand", "steak_preference", "stress_rating")
+```
+
+**Is this a random sample of DATA2X02 students?**
+```{r}
+cat("Number of samples:", dim(data)[1])
+```
+There are X people enrolled in DATA2X02, only 174 answered?
+It's not a random sample, it is specifically the group of people who decided to answer the form.
+
+
+**What are the potential biases? Which variables are most likely to be subjected to this bias?**
+Many questions rely on memory and/or estimation?
+e.g. Estimating hours of work/excersise/paid employment.
+
+
+**Are there any questions that needed improvement to generate useful data?**
+Does useful data include clean data?
+
+Many questions should specify units. Shoe size (AU/UK), height.
+
+Other, more subjective questions could made more objective.
+Stress level should mention that 0=not stressed at all and 10=constant high level of stress.
+Reason being is some people may interpret values like 10 as referring to a constant high level of stress, where as other may see 10 as being the most stressed they have ever been. 
+
+Hours exercising/studying should be made more specific, similar to the paid employment question, which generally has an objective understanding. 
+Should define what is meant by excercise (going for a walk? swim at the beach? jogging/running?).
+Also define what is meant by uni work. Does this include watching lectures/attending tuts?
+
+
+## minor heading
+
+dwadwadwa
+wadawd
+## minor heading
+
+dwadwadwa
+wadawd
+
+
+# Executive Summary
+this is a test
+
+## minor heading
+
+dwadwadwa
+wadawd
+
+## minor heading
+
+dwadwadwa
+wadawd
+## minor heading
+
+dwadwadwa
+wadawd
+
+
+# Executive Summary
+this is a test
+
+## minor heading
+
+dwadwadwa
+wadawd
+
+## minor heading
+
+dwadwadwa
+wadawd
+## minor heading
+
+dwadwadwa
+wadawd
