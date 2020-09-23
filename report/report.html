@@ -2874,7 +2874,8 @@ div.tocify {
 
 <div id="introduction" class="section level1" number="1">
 <h1 number="1"><span class="header-section-number">1</span> Introduction</h1>
-<p>A class survey was performed among DATA2X02 students…</p>
+<p>A class survey was performed among DATA2X02 students through Google Forms, asking a variety of questions from shoe-size to steak_preference. In this report, we begin by discussing the effectiveness of the survey in terms of potential biases, and ways in which questions could be improved. We then perform three statistical tests to find potential correlations and relationships that may exist within the data.</p>
+<p>The data was provided in CSV form and then cleaned to reduce the impact of possible biases and false/missing data.</p>
 <pre class="r"><code>df = readr::read_csv(&quot;https://docs.google.com/spreadsheets/d/e/2PACX-1vTf8eDSN_2QbMTyVvO5bdYKZSEEF2bufDdYnLnL-TsR8LM-6x-xu1cxmDMohlbLrkMJn9DE7EG7pg5P/pub?gid=1724783278&amp;single=true&amp;output=csv&quot;, col_types=cols())
 
 # Rename all columns
@@ -2882,23 +2883,35 @@ colnames(df) = c(&quot;timestamp&quot;, &quot;covid_tests&quot;, &quot;gender&qu
 
 # skimr::skim(data)
 # visdat::vis_miss(data)</code></pre>
-<p><strong>Is this a random sample of DATA2X02 students?</strong></p>
-<pre class="r"><code>cat(&quot;Number of samples:&quot;, dim(df)[1])</code></pre>
-<pre><code>## Number of samples: 174</code></pre>
-<p>There are 572 people enrolled in DATA2X02, only 174 answered bc voluntary. It’s not a random sample, it is specifically the group of people who decided to answer the form.</p>
-<p><strong>What are the potential biases? Which variables are most likely to be subjected to this bias?</strong> Many questions rely on memory and/or estimation? e.g. Estimating hours of work/excersise/paid employment. Yes i tihnk so “Recall bias” Try to list other biases by their name “respondents not want to answer a certain way due to stigma”</p>
-<p>Likely that some people didn’t answer / answers more than once, or did not take survey seriously. Is this a bias?</p>
-<p>People who answer survey are potentially those who are more involved in university work, and may have higher study hours as a result.</p>
-<p>People often will pick <em>nice</em> rounded numbers, such as for the number of hours studied. A large portion of answers ended with a <span class="math inline">\(0\)</span>, when</p>
+<div id="potential-biases" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Potential Biases</h2>
+<pre class="r"><code>dim(df)[1]</code></pre>
+<p>While the survey was offered to all <span class="math inline">\(572\)</span> students, only <span class="math inline">\(174\)</span> responses were recorded. As a result, the data should <em>not</em> be interpreted as reflecting a <em>random sample of DATA2X02 students</em>, rather the samples consist only of students who were aware of, and willing to complete the survey. This itself is a potential form of selection bias, as individuals who responded may be the type of students who are more willing to participate and engage in university activities. As a result, this could skew variables such as the number of study hours or stress ratings, as these students may be more likely to spend extra time on university work, and this may correlate with higher (or lower) stress levels.</p>
+<p>A large number of questions that are not easily objectively determined could be susceptible to recall or estimation bias. The three questions related to the number of weekly hours spent doing an activity last semester (university, employment, exercising) are likely quite poor estimations given the specificity of the answer. The time since the last dentist appt. may be similarly biased, especially when a student needs to differentiate between a small event that occurred say 11, or 13 months ago. Other questions which may be biased by estimation or recall bias include COVID tests, height (for those guessing), stress level and flossing frequency.</p>
+<pre class="r"><code>hour_responses = c(unlist(df[,&quot;university_hours&quot;]), unlist(df[,&quot;employment_hours&quot;]), unlist(df[,&quot;exercise_hours&quot;]))
+hour_responses = hour_responses[hour_responses &gt; 0]
+round_responses = hour_responses[hour_responses %% 5 != 0]
+round_responses_percent = 100*length(round_responses)/length(hour_responses)</code></pre>
+<p>The questions asking for a number of hours are likely suceptible to <em>round number bias</em>, where people are more likely to respond with <em>nice</em> numbers, like those that end in <span class="math inline">\(5\)</span>’s or <span class="math inline">\(0\)</span>’s. In the given survey, out of the 424 responses to hour-based questions that were greater than <span class="math inline">\(0\)</span>, ~<span class="math inline">\(51\)</span>% ended with a <span class="math inline">\(5\)</span> or <span class="math inline">\(0\)</span>, clearly demonstrating this bias (we expect something closer to <span class="math inline">\(20\)</span>%).</p>
+<p>In some questions people may deliberately give false data due to social stigmas. For example, respondants (particularly males) may have described themselves as taller. Also, some might have incentive to lie about the frequency of teeth flossing, or the number of study hours, as society generally perceives these as positive attributes.</p>
+<p>Some questions are subjective (stress, study hours, etc).<br />
+Questions that were more likely to be missing data due to privacy concerns (e.g. )<br />
+Likely that some people didn’t answer / answers more than once, or did not take survey seriously. Is this a bias?<br />
+There are also a number of outliers.</p>
+</div>
+<div id="potential-improvements" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Potential Improvements</h2>
 <p><strong>Are there any questions that needed improvement to generate useful data?</strong> Does useful data include clean data?</p>
 <p>Many questions should specify units. Shoe size (AU/UK), height. Plot a hist of shoe size to indicate this issue, there should be ~3 general peaks.</p>
 <p>Other, more subjective questions could made more objective. Stress level should mention that 0=not stressed at all and 10=constant high level of stress. Reason being is some people may interpret values like 10 as referring to a constant high level of stress, where as other may see 10 as being the most stressed they have ever been.</p>
 <p>Hours exercising/studying should be made more specific, similar to the paid employment question, which generally has an objective understanding. Should define what is meant by excercise (going for a walk? swim at the beach? jogging/running?). Also define what is meant by uni work. Does this include watching lectures/attending tuts?</p>
 </div>
+</div>
 <div id="data-cleaning" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> Data Cleaning</h1>
 <p>Data cleaning was performed adapting the code of Tarr (2020)…</p>
 <p>To address issues described above I have done some cleaning.</p>
+<p>While most variables required cleaning, only the data which is analysed undergoes pre-processing, as it could affect future statistical conclusions.</p>
 <pre class="r"><code># make sure u quote this or something
 
 #data = data %&gt;% 
@@ -2948,9 +2961,9 @@ df = df %&gt;%
 </div>
 <div id="are-covid-19-tests-randomly-performed" class="section level1" number="3">
 <h1 number="3"><span class="header-section-number">3</span> Are COVID-19 tests randomly performed?</h1>
-<p>Based on the provided COVID-19 test data, we investigate whether tests are performed at random times with equal likelihood across all students. If this was the case, we would expect that the number of tests follows a Poisson distribution, which measures the number of events that occur in a fixed interval of time. The Poisson distribution also assumes that the events occur at the same rate throughout the interval, and are independant from one-another.</p>
 <div id="hypothesis" class="section level2" number="3.1">
 <h2 number="3.1"><span class="header-section-number">3.1</span> Hypothesis</h2>
+<p>Based on the provided COVID-19 test data, we investigate whether tests are performed at random times with equal likelihood across all students. If this was the case, we would expect that the number of tests follows a Poisson distribution, which measures the number of events that occur in a fixed interval of time. The Poisson distribution also assumes that the events occur at the same rate throughout the interval, and are independant from one-another.</p>
 <p><span class="math inline">\(H_0\)</span>: the number of covid cases for each person follows a Poisson distribution.<br />
 <span class="math inline">\(H_1\)</span>: the data does not follow a Poisson distribution.</p>
 <pre class="r"><code>covid_tests = dplyr::pull(df,&quot;covid_tests&quot;)
@@ -3033,6 +3046,8 @@ pval = 1 - pchisq(t0, df = kr - 1 - 1)</code></pre>
 </div>
 <div id="does-having-a-dog-or-cat-increase-the-risk-of-asthma" class="section level1" number="4">
 <h1 number="4"><span class="header-section-number">4</span> Does having a dog or cat increase the risk of asthma?</h1>
+<div id="hypothesis-1" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Hypothesis</h2>
 <p>Pet hair, like that from dogs or cats, is known to be a catalyst of asthma attacks. However, does pet hair simply stimulate asthma attacks among those already with the condition, or is there an underlying correlation between people who report having asthma, and people who have owned dogs or cats.</p>
 <p>Need to flip yes and nos.</p>
 <pre class="r"><code>sample = drop_na(df, c(&quot;dog_or_cat&quot;, &quot;asthma&quot;))
@@ -3061,8 +3076,6 @@ knitr::kable(tbl)</code></pre>
 </tr>
 </tbody>
 </table>
-<div id="hypothesis-1" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Hypothesis</h2>
 <p><span class="math inline">\(H_0\)</span>: The odds ratio <span class="math inline">\(\theta\)</span> of having a dog/cat and having asthma is <span class="math inline">\(1\)</span>.<br />
 <span class="math inline">\(H_1\)</span>: The odds ratio <span class="math inline">\(\theta &gt; 1\)</span>, meaning those who have owned dogs/cats are more likely to report having asthma.</p>
 <p>Not necessarily a causation. Potentially those with cats/dogs were more aware of their asthma as they were more often exposed to asthma-inducing situtions such as pet hair.</p>
@@ -3090,14 +3103,14 @@ We therefore accept the null hypothesis <span class="math inline">\(H_0\)</span>
 </div>
 <div id="who-studies-more-males-or-females" class="section level1" number="5">
 <h1 number="5"><span class="header-section-number">5</span> Who studies more, males or females?</h1>
+<div id="hypothesis-2" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> Hypothesis</h2>
 <p>Data science has a large overrepresentation of males, but who studies more?</p>
 <p>Note that we limit this study to cisgendered people, as there are only 3 non-binary responses, which is not enough data to produce any statistically signficant results.</p>
 <pre class="r"><code># ignore categories with NA for gender or study hours
 sample = drop_na(df, c(&quot;gender&quot;, &quot;university_hours&quot;))
 male_hours = sample[&quot;university_hours&quot;][sample[&quot;gender&quot;] == &quot;male&quot;]
 female_hours = sample[&quot;university_hours&quot;][sample[&quot;gender&quot;] == &quot;female&quot;]</code></pre>
-<div id="hypothesis-2" class="section level2" number="5.1">
-<h2 number="5.1"><span class="header-section-number">5.1</span> Hypothesis</h2>
 <p><span class="math inline">\(H_0\)</span>: the mean weekly study hours is the same among men and women.<br />
 <span class="math inline">\(H_1\)</span>: the mean weekly study hours is differs among men and women.</p>
 <p>Do a side-by-side box plot.</p>
