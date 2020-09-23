@@ -20,6 +20,7 @@ library(readr)
 library(skimr)
 library(visdat)
 library(dplyr)
+library(gt)
 ```
 
 # Introduction
@@ -58,6 +59,8 @@ Likely that some people didn't answer / answers more than once, or did not take 
 
 People who answer survey are potentially those who are more involved in university work, and may have higher study hours as a result.
 
+People often will pick *nice* rounded numbers, such as for the number of hours studied. A large portion of answers ended with a $0$, when 
+
 
 **Are there any questions that needed improvement to generate useful data?**
 Does useful data include clean data?
@@ -76,6 +79,9 @@ Also define what is meant by uni work. Does this include watching lectures/atten
 
 
 # Data Cleaning
+
+Data cleaning was performed adapting the code of Tarr (2020)...
+
 To address issues described above I have done some cleaning.
 
 ```{r}
@@ -97,14 +103,31 @@ To address issues described above I have done some cleaning.
 # Drop rows with missing values for all entries except timestamp
 df = df[apply(!is.na(df[,2:21]), 1, any),]
 
-# Standardize gender into male,female,non-binary
+
+#df = df[df["eye_colour"] != "orange" & df["eye_colour"] != "Yellow",]
+
 df = df %>% 
+#  dplyr::filter(
+#    # Remove orange/yellow eye colour entries as they are likely non-serious
+#    eye_colour != "orange" & eye_colour != "Yellow"
+#  ) %>%
   dplyr::mutate(
+    # Standardize gender into male,female,non-binary
     gender = toupper(gender),
     gender = dplyr::case_when(
       startsWith(gender, "M") ~ "male",
       startsWith(gender, "F") ~ "female",
       TRUE ~ "non-binary"
+    ),
+    
+    asthma = dplyr::case_when(
+      asthma == "Yes" ~ TRUE,
+      TRUE ~ FALSE
+    ),
+    
+    dog_or_cat = dplyr::case_when(
+      dog_or_cat == "Yes" ~ TRUE,
+      TRUE ~ FALSE
     )
   )
 
@@ -131,7 +154,7 @@ $H_1$: the data does not follow a Poisson distribution.
 ```{r}
 covid_tests = dplyr::pull(df,"covid_tests")
 
-table(factor(covid_tests, levels=0:10))
+knitr::kable(t(table(factor(covid_tests, levels=0:10))))
 ```
 
 ## Assumptions
@@ -186,7 +209,7 @@ pval = 1 - pchisq(t0, df = kr - 1 - 1)
 
 The final test statistic is ~$`r signif(t0, 5)`$ with a p-value of ~$`r signif(pval, 3)`$.
 
-## Conclusion
+## Results
 As $p \leq 0.001$, we reject $H_0$ and accept $H_1$ that covid test cases do not follow a Poisson distribution.
 
 This result can likely be explained with various reasons. For one, it is likely that each student is exposed to covid testing at different rates, with individuals in high-risk areas such as inner-sydney being tested far more often than students in low-risk areas. Furthermore, the memoryless property of a Poisson distribution may not apply, as students who are tested once might have been exposed to the virus or be near others who have been, potentially increasing the chances of future tests.
@@ -196,8 +219,61 @@ Considering the plot in the assumptions, it might support that memoryless is not
 
 
 
+# Does having a dog or cat increase the risk of asthma?
+Pet hair, like that from dogs or cats, is known to be a catalyst of asthma attacks. 
+However, does pet hair simply stimulate asthma attacks among those already with the condition, or is there an underlying correlation between people who report having asthma, and people who have owned dogs or cats.
+
+
+Need to flip yes and nos.
+
+```{r}
+sample = drop_na(df, c("dog_or_cat", "asthma"))
+tbl = table(t(sample["dog_or_cat"]), t(sample["asthma"]), dnn=c("dog_or_cat", "asthma"))
+tbl = tbl[2:1, 2:1] # flip table to get TRUE,TRUE in top left
+
+knitr::kable(tbl)
+```
+
+
+
+## Hypothesis
+$H_0$: The odds ratio $\theta$ of having a dog/cat and having asthma is $1$.  
+$H_1$: The odds ratio $\theta > 1$, meaning those who have owned dogs/cats are more likely to report having asthma.  
+
+Not necessarily a causation.
+Potentially those with cats/dogs were more aware of their asthma as they were more often exposed to asthma-inducing situtions such as pet hair.
+
+```{r}
+odds_ratio = (tbl[1]*tbl[4]) / (tbl[2]*tbl[3])
+```
+The contingency table of the observed data has an odds ratio of ~$`r round(odds_ratio,2)`$.
+
+## Assumption
+As we are performing an exact test, we only need to make the assumption that the samples are independent from one-another. This can be assumed given that the presence/absence of a dog/cat or asthma should not affect its presense/absence in another student.
+
+## Test
+To perform a one-sided Fisher's Exact Test, we find the probability of a contingency table using the same marginal totals, with at least as extreme an odds ratio. 
+To do this we find the total number of more extreme tables, and divide by the total number of tables (under the same marginal totals).
+
+```{r, results="hide"}
+# Find the number of possible permuations at least as extreme
+
+
+fisher.test(tbl, alternative="greater")
+```
+The test reveals a $95$% confidence interval for the odds ratio of $[0.939, \infty]$.
+We get a p-value of ~$0.067$.
+
+
+## Results
+Our $95$% confidence interval contains the value $1$, and so our p-value $>=0.05$.  
+We therefore accept the null hypothesis $H_0$ that the odds ratio is $1$, and reject the alternative hypothesis $H_1$.
+
+
+
+
 # Who studies more, males or females?
-Data science has a significant overrepresentation of males, but who studies more?
+Data science has a large overrepresentation of males, but who studies more?
 
 Note that we limit this study to cisgendered people, as there are only 3 non-binary responses, which is not enough data to produce any statistically signficant results.
 
@@ -270,7 +346,7 @@ t.test(male_hours, female_hours, alternative="two.sided")
 ```
 The final test statistic is $-2.94$ with a p-value of ~$0.004$.
 
-## Conclusion
+## Results
 As $p \leq 0.01$, we reject $H_0$ and accept the alternative hypothesis $H_1$ that the mean study hours differ among men and women.
 
 Explain why.
@@ -278,13 +354,18 @@ Reference some studies about study differences.
 Also maybe talk about how men are more likely to exaggerate?
 Cite.
 
+
+
+
 # Conclusion
 
 conclusion should discuss the results and limitations of your work, it might also highlight future research directions (what would you like to have done but weren't able to).
 
 
 
+# References
 
+Tarr, G (2020). DATA2002 Data Analytics: Learning from Data. University of Sydney, Sydney Australia.
 
 
 
