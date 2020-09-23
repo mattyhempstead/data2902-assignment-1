@@ -15,38 +15,56 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(tidyverse)
 library(readr)
-
-
+library(skimr)
+library(visdat)
+library(dplyr)
 ```
 
 # Introduction
 A class survey was performed among DATA2X02 students...
 
 ```{r, output=F}
-data = readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTf8eDSN_2QbMTyVvO5bdYKZSEEF2bufDdYnLnL-TsR8LM-6x-xu1cxmDMohlbLrkMJn9DE7EG7pg5P/pub?gid=1724783278&single=true&output=csv", col_types=cols())
+df = readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTf8eDSN_2QbMTyVvO5bdYKZSEEF2bufDdYnLnL-TsR8LM-6x-xu1cxmDMohlbLrkMJn9DE7EG7pg5P/pub?gid=1724783278&single=true&output=csv", col_types=cols())
 
 # Rename all columns
-colnames(data) = c("timestamp", "covid_test", "gender", "postcode", "dentist", "university_hours", "social_media", "dog_or_cat", "live_with_parents", "exercise_hours", "eye_colour", "asthma", "employment_hours", "favourite_season", "shoe_size", "height", "floss", "glasses_or_contacts", "dominant_hand", "steak_preference", "stress_rating")
+colnames(df) = c("timestamp", "covid_tests", "gender", "postcode", "dentist", "university_hours", "social_media", "dog_or_cat", "live_with_parents", "exercise_hours", "eye_colour", "asthma", "employment_hours", "favourite_season", "shoe_size", "height", "floss", "glasses_or_contacts", "dominant_hand", "steak_preference", "stress_rating")
+
+# skimr::skim(data)
+# visdat::vis_miss(data)
 ```
+
+
 
 **Is this a random sample of DATA2X02 students?**
 ```{r}
-cat("Number of samples:", dim(data)[1])
+cat("Number of samples:", dim(df)[1])
 ```
-There are X people enrolled in DATA2X02, only 174 answered?
+There are 572 people enrolled in DATA2X02, only 174 answered bc voluntary.
 It's not a random sample, it is specifically the group of people who decided to answer the form.
+
 
 
 **What are the potential biases? Which variables are most likely to be subjected to this bias?**
 Many questions rely on memory and/or estimation?
 e.g. Estimating hours of work/excersise/paid employment.
+Yes i tihnk so "Recall bias"
+Try to list other biases by their name
+"respondents not want to answer a certain way due to stigma"
+
+
+Likely that some people didn't answer / answers more than once, or did not take survey seriously. Is this a bias?
+
+People who answer survey are potentially those who are more involved in university work, and may have higher study hours as a result.
 
 
 **Are there any questions that needed improvement to generate useful data?**
 Does useful data include clean data?
 
 Many questions should specify units. Shoe size (AU/UK), height.
+Plot a hist of shoe size to indicate this issue, there should be ~3 general peaks.
+
 
 Other, more subjective questions could made more objective.
 Stress level should mention that 0=not stressed at all and 10=constant high level of stress.
@@ -57,47 +75,220 @@ Should define what is meant by excercise (going for a walk? swim at the beach? j
 Also define what is meant by uni work. Does this include watching lectures/attending tuts?
 
 
-## minor heading
+# Data Cleaning
+To address issues described above I have done some cleaning.
 
-dwadwadwa
-wadawd
-## minor heading
+```{r}
+# make sure u quote this or something
 
-dwadwadwa
-wadawd
+#data = data %>% 
+#  dplyr::mutate(
+#    height = dplyr::case_when(
+#      height < 2.3 ~ height*100,
+#      TRUE ~ height
+#    ),
+#    
+#    gender = toupper(gender),
+#    gender = stringr::str_sub(gender, start=1, end=1)
+#    
+#    gender = gendercodeR::recode_gender(gender)
+#  )
+
+# Drop rows with missing values for all entries except timestamp
+df = df[apply(!is.na(df[,2:21]), 1, any),]
+
+# Standardize gender into male,female,non-binary
+df = df %>% 
+  dplyr::mutate(
+    gender = toupper(gender),
+    gender = dplyr::case_when(
+      startsWith(gender, "M") ~ "male",
+      startsWith(gender, "F") ~ "female",
+      TRUE ~ "non-binary"
+    )
+  )
+
+```
+
+Do some more cleaning...
 
 
-# Executive Summary
-this is a test
 
-## minor heading
+# Are COVID-19 tests randomly performed?
+Based on the provided COVID-19 test data, we investigate whether tests are performed at random times with equal likelihood across all students. 
+If this was the case, we would expect that the number of tests follows a Poisson distribution, which measures the number of events that occur in a fixed interval of time. The Poisson distribution also assumes that the events occur at the same rate throughout the interval, and are independant from one-another.
 
-dwadwadwa
-wadawd
+## Hypothesis
+$H_0$: the number of covid cases for each person follows a Poisson distribution.  
+$H_1$: the data does not follow a Poisson distribution.
 
-## minor heading
-
-dwadwadwa
-wadawd
-## minor heading
-
-dwadwadwa
-wadawd
+[//]: Out of 174 responses, 172 have a response for the number of times a person has been tested for covid.
+[//]: Assume each person is equally likely to receive a test at any given time.
+[//]: Since the sum of poissons is also poisson, the probability of a test in a set time period may change over time, as long as it remains constant for all people?
+[//]: Each person can be seen as an independant trial.
 
 
-# Executive Summary
-this is a test
+```{r}
+covid_tests = dplyr::pull(df,"covid_tests")
 
-## minor heading
+table(factor(covid_tests, levels=0:10))
+```
 
-dwadwadwa
-wadawd
+## Assumptions
 
-## minor heading
 
-dwadwadwa
-wadawd
-## minor heading
+We can safely assume the observations are independant, as one student receiving a covid test should not affect the probability of another student receiving a test. Perhaps if the students lived together then tests may be correlated, however this is likely not the case for the vast majority of students.
 
-dwadwadwa
-wadawd
+
+```{r, output=F}
+y = unname(table(factor(covid_tests, levels=0:10)))
+lambda_est = mean(covid_tests)
+
+# get expected probabilities, ensure they sum to 1
+p = dpois(0:10, lambda=lambda_est)
+p[11] = 1 - sum(p[0:10])
+ey = length(covid_tests) * p
+
+# combine tail to ensure ey >= 5
+yr = c(y[1:2], sum(y[3:11]))
+pr = c(p[1:2], sum(p[3:11]))
+eyr = c(ey[1:2], sum(ey[3:11]))
+```
+
+
+```{r}
+xr = c("0","1",">=2") # group labels
+par(mfrow=c(1,2), cex = 1.5) # plot options
+barplot(yr,names.arg=xr,
+        main="Observed frequency")
+barplot(eyr,names.arg=xr,
+        main="Expected frequency")
+```
+
+To ensure the assumption that expected frequencies are $\geq 5$, we group together all observations where $x >= 2$.
+
+## Test
+We perform a chi-squared test with 1 degree of freedom.
+Why?
+
+Talk about why we performed this instead of another test.
+
+
+$$t_0 = \sum_{i=1}^k \frac{(Y_i-n p_i)^2}{n p_i}$$
+
+Under $H_0$, $T \sim \chi_1^2$ approximately.
+
+```{r}
+kr = length(yr)
+t0 = sum((yr - eyr)^2/eyr)
+pval = 1 - pchisq(t0, df = kr - 1 - 1)
+```
+
+The final test statistic is ~$`r signif(t0, 5)`$ with a p-value of ~$`r signif(pval, 3)`$.
+
+## Conclusion
+As $p \leq 0.001$, we reject $H_0$ and accept $H_1$ that covid test cases do not follow a Poisson distribution.
+
+This result can likely be explained with various reasons. For one, it is likely that each student is exposed to covid testing at different rates, with individuals in high-risk areas such as inner-sydney being tested far more often than students in low-risk areas. Furthermore, the memoryless property of a Poisson distribution may not apply, as students who are tested once might have been exposed to the virus or be near others who have been, potentially increasing the chances of future tests.
+
+Maybe a quick plot of the number of postcode?
+Considering the plot in the assumptions, it might support that memoryless is not obeyed.
+
+
+
+# Who studies more, males or females?
+Data science has a significant overrepresentation of males, but who studies more?
+
+Note that we limit this study to cisgendered people, as there are only 3 non-binary responses, which is not enough data to produce any statistically signficant results.
+
+```{r}
+# ignore categories with NA for gender or study hours
+sample = drop_na(df, c("gender", "university_hours"))
+male_hours = sample["university_hours"][sample["gender"] == "male"]
+female_hours = sample["university_hours"][sample["gender"] == "female"]
+```
+
+
+## Hypothesis
+$H_0$: the mean weekly study hours is the same among men and women.  
+$H_1$: the mean weekly study hours is differs among men and women.
+
+Do a side-by-side box plot.
+
+```{r}
+
+bplot = boxplot(male_hours, female_hours, names=c("Male", "Female"), horizontal = T)
+
+#  remove outliers
+outliers = unlist(bplot["out"])
+male_hours = male_hours[!male_hours %in% outliers]
+female_hours = female_hours[!female_hours %in% outliers]
+
+# remove zero values
+male_hours = male_hours[male_hours > 0]
+female_hours = female_hours[female_hours > 0]
+```
+We ignore outlier values, in particular the values $98$ and $170$ for males, and $84$ for females.
+The value $170$ is most likely not a serious answer. While $98$ and $84$ may be possible, they would represent extreme students which can be ignored as they do not represent a typical sample from the population.
+
+Can also justify ignoring values equal to 0, since this most likely suggests the students were not enrolled in university, which is not what I am testing.
+
+
+Males have a mean study hour of $`r mean(male_hours)`$ and SD $`r sqrt(var(male_hours))`$.  
+Females have a mean study hour of $`r mean(female_hours)`$ and SD $`r sqrt(var(female_hours))`$.  
+
+
+## Assumptions
+
+We make the assumption that all samples (male or female), are independent from one another as the study hours of one student should not influence the study hours of another. There is the possibility that some students may be friends, and their study hours may be correlated due through group studying, however we assume this effect is negligible.
+
+[//]: However, this may not have been the case if students were allowed to see the responses of past students, as this could influence the responses of students wanting to seem average.
+
+
+We also need to make the assumption that study hours for both males and females follow a normal distribution.  
+In particular, male responses $X_1,X_2,...,X_{n_x}$ should be iid $N(\mu_X, \sigma^2_X)$.  
+Similarly, female responses $Y_1,Y_2,...,Y_{n_y}$ are assumed to be iid $N(\mu_Y, \sigma^2_Y)$.
+
+```{r}
+qqnorm(male_hours)
+qqline(male_hours)
+
+qqnorm(female_hours)
+qqline(female_hours)
+```
+
+According to the QQ-plots for male and female study hours, the study values seem approximately normal.
+
+## Test
+Given the assumption of iid samples from normal distributions with different variances, we perform a Welch Two-Sample t-test. If instead the samples had equal variance, a standard Two-Sample t-test would have been appropriate.
+
+The test statistic is 
+
+$$t_0 = \frac{\bar X-\bar Y}{\sqrt{\frac{S_X^2}{n_x}+\frac{S_Y^2}{n_y}}}$$
+```{r, results="hide"}
+t.test(male_hours, female_hours, alternative="two.sided")
+```
+The final test statistic is $-2.94$ with a p-value of ~$0.004$.
+
+## Conclusion
+As $p \leq 0.01$, we reject $H_0$ and accept the alternative hypothesis $H_1$ that the mean study hours differ among men and women.
+
+Explain why.
+Reference some studies about study differences.
+Also maybe talk about how men are more likely to exaggerate?
+Cite.
+
+# Conclusion
+
+conclusion should discuss the results and limitations of your work, it might also highlight future research directions (what would you like to have done but weren't able to).
+
+
+
+
+
+
+
+
+
+
+
