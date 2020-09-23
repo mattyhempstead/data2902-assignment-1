@@ -52,21 +52,17 @@ hour_responses = hour_responses[hour_responses > 0]
 round_responses = hour_responses[hour_responses %% 5 != 0]
 round_responses_percent = 100*length(round_responses)/length(hour_responses)
 ```
-The questions asking for a number of hours are likely suceptible to *round number bias*, where people are more likely to respond with *nice* numbers, like those that end in $5$'s or $0$'s. In the given survey, out of the `r length(hour_responses)` responses to hour-based questions that were greater than $0$, ~$`r round(round_responses_percent)`$% ended with a $5$ or $0$, clearly demonstrating this bias (we expect something closer to $20$%).
+The questions asking for a number of hours are likely susceptible to *round number bias*, where people are more likely to respond with *nice* numbers, like those that end in $5$'s or $0$'s. In the given survey, out of the `r length(hour_responses)` responses to hour-based questions that were greater than $0$, ~$`r round(round_responses_percent)`$% ended with a $5$ or $0$, clearly demonstrating this bias (we expect something closer to $20$%).
 
-In some questions people may deliberately give false data due to social stigmas. For example, respondants (particularly males) may have described themselves as taller. Also, some might have incentive to lie about the frequency of teeth flossing, or the number of study hours, as society generally perceives these as positive attributes.
+In some questions people may deliberately give false data due to social stigmas. For example, respondents may have personal incentive to lie about their height (taller or shorter), frequency of teeth flossing, or the number of study hours, as society generally perceives these as positive attributes.
 
-There is also some subjectivness in the questions, such as those relating to ranking "stress" and what counts as "excersise" or "university hours". The correct measurements used for shoe size are also not specified, leading to near unusable data.
+There is also some subjectiveness in the questions, such as those relating to ranking "stress" and what counts as "exercise" or "university hours". The correct measurements used for shoe size are also not specified, leading to near unusable data.
 
 There is also potentially some bias generated from missing answers, outliers and non-serious responses.
 
 ## Potential Improvements
 
-The survey could be improved in various ways.
-
-The subjectiveness in certain questions could be removed. For example, university work hours could be objectively defined as "hours spent doing work, not including lectures or tutorials". Excersice could also be simiarly re-defined, such as "time spent for the purpose of excersice, not including walks". Shoe size could also have a standard measurement defined, as could height.
-
-The gender field could also be replaced with a dropdown containing common options, with an "other" text field present for those who do not identify as the provided options. This would make cleaning data easier.
+The subjectiveness in certain questions could be removed to obtain more useful data. For example, university work hours could be objectively defined as "hours spent doing work, not including lectures or tutorials". Exercise could also be similarly re-defined, such as "time spent for the purpose of exercise, not including walks". Shoe size could also have a standard measurement defined, as could height.
 
 
 ## Data Processing
@@ -111,7 +107,7 @@ The data was provided in CSV form, blank responses were removed along with two o
 
 ## Hypothesis
 Based on the provided COVID-19 test data, we investigate whether tests are performed at random times with equal likelihood across all students. 
-If this was the case, we would expect that the number of tests follows a Poisson distribution, which measures the number of events that occur in a fixed interval of time. The Poisson distribution also assumes that the events occur at the same rate throughout the interval, and are independant from one-another.
+If this was the case, we would expect that the number of tests follows a Poisson distribution, which measures the number of events that occur in a fixed interval of time. The Poisson distribution also assumes that the events occur at the same rate throughout the interval, and are independent from one-another.
 
 
 ```{r, fig.cap="This is some text"}
@@ -135,7 +131,7 @@ $H_1$: the data does not follow a Poisson distribution.
 ## Assumptions
 
 
-We can safely assume the observations are independant, as one student receiving a covid test should not affect the probability of another student receiving a test. Perhaps if the students lived together then tests may be correlated, however this is likely not the case for the vast majority of students.
+We can safely assume the observations are independent, as one student receiving a covid test should not affect the probability of another student receiving a test. Perhaps if the students lived together then tests may be correlated, however this is likely not the case for the vast majority of students.
 
 ```{r}
 y = unname(table(factor(covid_tests, levels=0:10)))
@@ -229,7 +225,7 @@ We choose to perform a one-sided Fisher's Exact Test. The one-sidedness is becau
 
 
 ## Assumptions
-A Fisher's Exact Test only needs to make the assumption that the samples are iid. This can be assumed given all responses are from the same student population, and that the presence/absence of a dog/cat or asthma should not affect its presense/absence in another student.
+A Fisher's Exact Test only needs to make the assumption that the samples are iid. This can be assumed given all responses are from the same student population, and that the presence/absence of a dog/cat or asthma should not affect its presence/absence in another student.
 
 ## Test
 The test statistic for our one-sided Fisher's Exact Test is found by counting the total number of contingency tables with the same marginal totals, and at least as large an odds ratio. 
@@ -252,9 +248,9 @@ This result is evidence for asthma being not just a genetic condition, but also 
 # Who studies more, males or females?
 
 ## Hypothesis
-Data science has a large overrepresentation of males, but this does not necessarily reflect performance. In this study we investigate whether females, while less represented, are better at studying for longer periods than males.
+Data science has a large over-representation of males, but this does not necessarily reflect performance. In this study we investigate whether females, while less represented, are better at studying for longer periods than males.
 
-Note we limit this study to cisgendered people, as there are only 3 non-binary responses which is not enough data to produce any statistically signficant results.
+Note we limit this study to cisgendered people, as there are only 3 non-binary responses which is not enough data to produce any statistically significant results.
 
 ```{r, fig.cap="Figure 4.1: A boxplot demonstrating the difference in weekly study hours between males and females."}
 # ignore categories with NA for gender or study hours
@@ -318,13 +314,13 @@ However even given these promising results, we should still note the many potent
 # Conclusion
 
 In this report, we propose strong evidence that COVID testing is a non-random process and suggest possible explanations for this result. 
-We also provide some evidence to suggest a positive relationship between asthma and pet ownership. However this is a research direction that should be given more focus, as the study was limited by multiple confounding factors that have been suggested in 4.4. Lastly, we show with statistical significance that females typically study more than males, a result that agrees with existing research. Overall however, the existance of many potential biases in the data of this study and others should be addressed first before any action is taken based on the conclusions.
+We also provide some evidence to suggest a positive relationship between asthma and pet ownership. However this is a research direction that should be given more focus, as the study was limited by multiple confounding factors that have been suggested in 4.4. Lastly, we show with statistical significance that females typically study more than males, a result that agrees with existing research. Overall however, the existence of many potential biases in the data of this study and others should be addressed first before any action is taken based on the conclusions.
 
 # References
 
 Tarr, G (2020). DATA2002 Data Analytics: Learning from Data. University of Sydney, Sydney Australia.  
 
-Sahni, M (2012), Study Habits of College Students: Differences with Respect to Gender and Acedemic Stream. Vaish Collage of Education.   
+Sahni, M (2012), Study Habits of College Students: Differences with Respect to Gender and Academic Stream. Vaish Collage of Education.   
 http://www.educationindiajournal.org/home_art_avi.php?path=&id=386
 
 Al-Shawwa et al. (2014), Difference in Studying Habits Between Male and Female Medical Students of King Abdulaziz University. King Abdulaziz University.  
