@@ -1,6 +1,6 @@
 ---
 title: "DATA2902 Report"
-author: "Matty Hempstead 490424010"
+author: "490424010"
 subtitle: "Analysis of Class Survey"
 date: "23/09/2020"
 output: 
@@ -26,19 +26,14 @@ A class survey was performed among DATA2X02 students through Google Forms, askin
 
 ```{r, output=F}
 # import data
-
 df = read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTf8eDSN_2QbMTyVvO5bdYKZSEEF2bufDdYnLnL-TsR8LM-6x-xu1cxmDMohlbLrkMJn9DE7EG7pg5P/pub?gid=1724783278&single=true&output=csv", col_types=cols())
 
-# Rename all columns
+# rename all columns
 colnames(df) = c("timestamp", "covid_tests", "gender", "postcode", "dentist", "university_hours", "social_media", "dog_or_cat", "live_with_parents", "exercise_hours", "eye_colour", "asthma", "employment_hours", "favourite_season", "shoe_size", "height", "floss", "glasses_or_contacts", "dominant_hand", "steak_preference", "stress_rating")
 ```
 
 
 ## Potential Biases
-
-```{r, results="hide"}
-dim(df)[1]
-```
 
 [//]: **What are the potential biases? Which variables are most likely to be subjected to this bias?**
 
@@ -47,6 +42,7 @@ While the survey was offered to all $572$ students, only $174$ responses were re
 A large number of questions that are not easily objectively determined could be susceptible to recall or estimation bias. The three questions related to the number of weekly hours spent doing an activity last semester (university, employment, exercising) are likely quite poor estimations given the specificity of the answer. Other questions which may be similarly biased include COVID tests, height (for those students guessing), stress level, last dentist appointment, and flossing frequency.
 
 ```{r}
+# get number of round_responses
 hour_responses = c(unlist(df[,"university_hours"]), unlist(df[,"employment_hours"]), unlist(df[,"exercise_hours"]))
 hour_responses = hour_responses[hour_responses > 0]
 round_responses = hour_responses[hour_responses %% 5 != 0]
@@ -86,11 +82,11 @@ df = df %>%
       TRUE ~ "non-binary"
     ),
     
+    # convert asthma and dog_or_cat into boolean true/false
     asthma = dplyr::case_when(
       asthma == "Yes" ~ TRUE,
       TRUE ~ FALSE
     ),
-    
     dog_or_cat = dplyr::case_when(
       dog_or_cat == "Yes" ~ TRUE,
       TRUE ~ FALSE
@@ -111,6 +107,7 @@ If this was the case, we would expect that the number of tests follows a Poisson
 
 
 ```{r, fig.cap="This is some text"}
+# get frequencies of each covid test count
 covid_tests = dplyr::pull(df,"covid_tests")
 tests_table = table(factor(covid_tests, levels=0:10))
 t(c(c("Responses"), t(tests_table))) %>%
@@ -127,11 +124,11 @@ $H_1$: the data does not follow a Poisson distribution.
 [//]: Since the sum of poissons is also poisson, the probability of a test in a set time period may change over time, as long as it remains constant for all people?
 [//]: Each person can be seen as an independant trial.
 
+A chi-squared test will be used, as it allows us to test whether each of the estimated probabilities from the sample align with the expected probabilities from the PMF of a Poisson distribution.
 
 ## Assumptions
 
-
-We can safely assume the observations are independent, as one student receiving a covid test should not affect the probability of another student receiving a test. Perhaps if the students lived together then tests may be correlated, however this is likely not the case for the vast majority of students.
+We require the assumption that observations are independent, which can be validated since one student receiving a covid test should not affect the probability of another student receiving a test. Perhaps if the students lived together then tests may be correlated, however this is likely not the case for the vast majority of students.
 
 ```{r}
 y = unname(table(factor(covid_tests, levels=0:10)))
@@ -147,7 +144,8 @@ yr = c(y[1:2], sum(y[3:11]))
 pr = c(p[1:2], sum(p[3:11]))
 eyr = c(ey[1:2], sum(ey[3:11]))
 ```
-To also ensure the assumption that expected frequencies are $\geq 5$, we group together all observations where the number of tests is at least $2$.
+
+We also require to assumption that expected frequencies are $\geq 5$. This is achieved by grouping together all observations where the number of tests is at least $2$.
 
 ```{r, fig.cap="Figure 2.2: The observed COVID test frequencies vs the expected frequencies assuming a Poisson distribution."}
 
@@ -174,6 +172,7 @@ $$t_0 = \sum_{i=1}^k \frac{(Y_i-n p_i)^2}{n p_i}$$
 where $k=3$, $Y_i$ is the observed value for $i-1$ test cases, and $np_i$ is the expected value for $i-1$ test cases.
 
 ```{r}
+# test statistic for chi-squared with 1 dof
 kr = length(yr)
 t0 = sum((yr - eyr)^2/eyr)
 pval = 1 - pchisq(t0, df = kr - 1 - 1)
@@ -199,6 +198,7 @@ However, does pet hair simply stimulate asthma attacks among those already with 
 
 
 ```{r}
+# get odds ratio of asthma and dog_or_cat
 sample = drop_na(df, c("dog_or_cat", "asthma"))
 tbl = table(t(sample["dog_or_cat"]), t(sample["asthma"]), dnn=c("dog_or_cat", "asthma"))
 tbl = tbl[2:1, 2:1] # flip table to get TRUE,TRUE in top left
@@ -220,9 +220,7 @@ The contingency table of the observed data (shown above) has an odds ratio of ~$
 $H_0$: The odds ratio of having a dog/cat and having asthma is $1$, meaning those who have had a dog/cat are equally as likely to record having asthma as those who have not.  
 $H_1$: The odds ratio is greater than $1$, meaning those who have owned dogs/cats are more likely to report having asthma.  
 
-
-We choose to perform a one-sided Fisher's Exact Test. The one-sidedness is because we are only interested in whether asthma is positively correlated with pet hair. While a one-sided chi-squared test would also be valid, the data is simple enough to easily perform an exact calculation, allowing for a more accurate p-value.
-
+We choose to perform a one-sided Fisher's Exact Test. The one-sidedness is because we are only interested in whether asthma is positively correlated with pet hair. While a one-sided chi-squared test would also be valid, the $2$x$2$ table data is simple enough to easily perform an exact calculation, allowing for a more accurate p-value.
 
 ## Assumptions
 A Fisher's Exact Test only needs to make the assumption that the samples are iid. This can be assumed given all responses are from the same student population, and that the presence/absence of a dog/cat or asthma should not affect its presence/absence in another student.
@@ -258,7 +256,7 @@ sample = drop_na(df, c("gender", "university_hours"))
 male_hours = sample["university_hours"][sample["gender"] == "male"]
 female_hours = sample["university_hours"][sample["gender"] == "female"]
 
-bplot = boxplot(male_hours, female_hours, names=c("Male", "Female"), horizontal = T, xlab="Average weekly university study hours")
+bplot = boxplot(male_hours, female_hours, names=c("Male", "Female"), horizontal = T, xlab="Average weekly university study hours", col=c("light blue","light pink"))
 
 #  remove outliers
 outliers = unlist(bplot["out"])
@@ -277,11 +275,12 @@ In the observed data, males have a mean study time of $`r round(mean(male_hours)
 $H_0$: the true mean weekly study hours is the same among men and women.  
 $H_1$: the true mean weekly study hours is greater for women than men.
 
+The test we will be performing is a one-sided Welch Two-Sample t-test, which is used to decide if the mean of two populations is the same, or if it differs in a single direction. As we can't assume the two populations have equal variance, a standard Two-Sample t-test is not appropriate.
+
 ## Assumptions
+We require the assumption that all samples (male or female), are independent from one another. As the study hours of one student should not influence the study hours of another, this assumption is satisifed. There is the possibility that some students may be friends, and their study hours may be correlated due to group studying, however we assume this effect is negligible.
 
-We make the assumption that all samples (male or female), are independent from one another, as the study hours of one student should not influence the study hours of another. There is the possibility that some students may be friends, and their study hours may be correlated due to group studying, however we assume this effect is negligible.
-
-We also need the assumption that study hours for both males and females follow a normal distribution, this assumption is verified in the below QQ-plots.  
+We also need the assumption that study hours for both males and females follow a normal distribution, this assumption is verified in the below QQ-plots.
 
 ```{r, fig.cap="Figure 4.2: Side by side qq-plot demonstrating the approximate normality of both male and female samples."}
 par(mfrow=c(1,2))
@@ -293,9 +292,7 @@ qqnorm(female_hours, main="Female Q-Q Plot", col="hot pink")
 qqline(female_hours)
 ```
 ## Test
-Given the assumption of iid samples from normal distributions, we perform a one-sided Welch Two-Sample t-test. As we can't assume the two populations have equal variance, a standard Two-Sample t-test is not appropriate.
-
-The test statistic can be calculated with,
+For the Welch test statistic can be calculated with,
 
 $$t_0 = \frac{\bar X-\bar Y}{\sqrt{\frac{S_X^2}{n_x}+\frac{S_Y^2}{n_y}}}$$
 ```{r, results="hide"}
@@ -306,7 +303,7 @@ giving a final value for $t_0$ of $-3.24$ and a p-value of ~$0.0016$.
 ## Results
 As $p \leq 0.01$, we reject $H_0$ and accept the alternative hypothesis $H_1$ that the mean study hours are greater for females compared to males.
 
-A similar result has been found in several studies, Al-Shawwa et al. (2014) found that in one sample of 359 medical students, 83% of females studied daily compared to 74% of males. Furthermore, Sahni, M (2012) showed that females are generally better that males at skills which are often related to long study sessions including concentration, recording, and drilling.
+A similar result has been found in several studies, Al-Shawwa et al. (2014) found that in one sample of 359 medical students, 83% of females studied daily compared to 74% of males. Furthermore, Sahni, M (2012) showed that females are generally better than males at skills which are often related to long study sessions including concentration, recording, and drilling.
 
 However even given these promising results, we should still note the many potential biases present in the university hours data, as stated in 1.1. A study which accounts for these biases may no longer agree with the current conclusion.
 
