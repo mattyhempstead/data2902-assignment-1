@@ -1,0 +1,173 @@
+"","timestamp","covid_test","gender","dentist","university_work","social_media","dog_or_cat","live_with_parents","exercising","eye_colour","asthma","paid_work","fav_season","height","floss_frequency","glasses","dominant_hand","steak_preference","stress_level"
+"1","2020-09-02 22:07:21",1,"Female","Less than 6 months",38,"N/A","No","Yes",0,"brown","No",0,"Winter",160,"Weekly","Yes","Right handed","Medium-rare",7
+"2","2020-09-02 22:08:45",0,"Male","More than 2 years",40,"Bilibili / Youtobe","No","Yes",2,"black","No",0,"Autumn",178,"Less than once a week","No","Right handed","Medium",9
+"3","2020-09-02 22:08:59",0,"Male","Less than 6 months",3,"Facebook","No","Yes",8,"black","No",2,"Autumn",178,"Less than once a week","No","Right handed","I don't eat beef",4
+"4","2020-09-02 22:09:01",5,"Male","More than 2 years",40,"WeChat","No","Yes",8,"black","No",0,"Spring",175,"Every day","Yes","Right handed","Medium",9
+"5","2020-09-02 22:11:07",0,"Male","More than 2 years",6,"Facebook","No","Yes",5,"black","Yes",8,"Autumn",NA,"Every day","Yes","Right handed","Medium-well done",2
+"6","2020-09-02 22:12:31",0,"Male","Between 12 months and 2 years",30,"Reddit","Yes","Yes",4,"green","No",10,"Autumn",193,"Less than once a week","Yes","Right handed","Medium-rare",3
+"7","2020-09-02 22:14:34",0,"Male","Between 6 and 12 months",36,NA,"Yes","Yes",5,"brown","Yes",10,"Spring",174,"Every day","No","Right handed","Medium-well done",6
+"8","2020-09-02 22:16:17",0,"Male","More than 2 years",50,"FaceBook","No","No",3,"black","No",NA,"Summer",187,"Less than once a week","Yes","Right handed","Medium-well done",6
+"9","2020-09-02 22:20:04",1,"Female","Less than 6 months",40,"tiktok","Yes","Yes",0,"brown","No",10,"Autumn",165,"Less than once a week","No","Right handed","Medium-rare",5
+"10","2020-09-02 22:31:27",0,"Male","Less than 6 months",20,"Reddit","No","Yes",7,"brown","No",10,"Winter",176,"Less than once a week","Yes","Right handed","Medium-rare",7
+"11","2020-09-02 22:32:56",2,"Female","Less than 6 months",50,"wechat, instagram","No","Yes",3,"brown","Yes",0,"Autumn",162,"Less than once a week","Yes","Right handed","Medium",6
+"12","2020-09-02 22:33:04",0,"Male","More than 2 years",25,"Instagram","No","Yes",5,"black","No",12,"Winter",180,"Weekly","No","Left handed","Well done",8
+"13","2020-09-02 22:33:20",0,"Male","Between 6 and 12 months",30,"Reddit","No","Yes",2,"brown","Yes",0,"Spring",188,"Every day","Yes","Right handed","I don't eat beef",6
+"14","2020-09-02 22:35:03",0,"Female","Between 6 and 12 months",NA,NA,"No","No",5,"brown","No",0,"Autumn",164,"Every day","No","Right handed","Medium-rare",4
+"15","2020-09-02 22:35:35",0,"Female","Between 12 months and 2 years",20,"Wechat","Yes","No",0,"brown","No",0,"Spring",158,"Less than once a week","No","Right handed","Well done",9
+"16","2020-09-02 22:42:30",0,"Male","Between 12 months and 2 years",10,"facebook","No","Yes",16,"brown","No",0,"Autumn",170,"Less than once a week","No",NA,"Medium-rare",1
+"17","2020-09-02 22:43:18",0,"Male","Between 6 and 12 months",40,"reddit","No","No",1,"brown","No",0,"Summer",165,"Weekly","Yes","Right handed","Medium",4
+"18","2020-09-02 22:44:29",1,"Male","Between 12 months and 2 years",20,"Club Penguin","No","Yes",0.5,"brown","No",48,"Spring",165,"Less than once a week","Yes","Right handed","Medium-rare",10
+"19","2020-09-02 22:47:12",0,"Male","Less than 6 months",25,"Twitter","No","Yes",5,"brown","No",18,"Winter",167,"Less than once a week","No","Right handed","Medium-rare",6
+"20","2020-09-02 22:52:33",0,"Female","Between 6 and 12 months",40,"Facebook","No","Yes",5,"brown","No",10,"Autumn",171,"Less than once a week","No","Right handed","Medium-rare",9
+"21","2020-09-02 22:53:29",0,"Male","More than 2 years",60,"Messenger","No","Yes",4,"black","No",10,"Spring",169,"Less than once a week","No","Right handed","I don't eat beef",5
+"22","2020-09-02 22:59:14",0,"Female","Between 12 months and 2 years",40,"Quora","No","No",1,NA,"No",5,"Autumn",NA,"Every day",NA,"Right handed",NA,3
+"23","2020-09-02 23:00:15",1,"Male","Between 12 months and 2 years",30,"Reddit","No","Yes",2,"green","No",0,"Spring",170,"Less than once a week","No","Right handed","Medium-rare",2
+"24","2020-09-02 23:00:28",0,"Male","Less than 6 months",40,"Facebook","Yes","No",5,"dark brown","No",0,"Spring",175,"Every day","No","Right handed","Rare",3
+"25","2020-09-02 23:29:14",0,"Female","Between 12 months and 2 years",12,"YouTube","Yes","No",1,"dark brown","No",0,"Spring",151,"Most days","No","Right handed","Well done",4
+"26","2020-09-02 23:42:26",1,"Male","Between 6 and 12 months",0,"Facebook","Yes","Yes",2,"brown","No",3,"Winter",180,"Weekly","No","Right handed","Rare",0
+"27","2020-09-02 23:45:58",1,"Female","Less than 6 months",30,"Instagram","No","Yes",10,"brown","No",5,"Spring",169,"Most days","Yes","Right handed","Medium",5
+"28","2020-09-02 23:47:52",0,"Male","More than 2 years",40,"twitter","Yes","No",10,"black","No",0,"Spring",183,"Weekly","Yes","Right handed","Well done",4
+"29","2020-09-03 00:18:41",3,"Female","Between 6 and 12 months",30,"Tiktok","Yes","Yes",14,"black","No",0,"Summer",163,"Every day","No","Right handed","Medium-well done",8
+"30","2020-09-03 00:39:18",0,"Male","Less than 6 months",4,"Instagram","Yes","Yes",7,"dark brown","Yes",0,"Spring",176,"Weekly","No","Right handed","Medium",1
+"31","2020-09-03 00:44:19",0,"Female","Between 6 and 12 months",84,"instagram","Yes","No",3,"black","No",0,"Summer",174,"Every day","Yes","Right handed","Medium-rare",7
+"32","2020-09-03 01:11:52",1,"Male","Between 6 and 12 months",20,"Instagram","Yes","Yes",1,"brown","No",0,"Winter",170,"Weekly","Yes","Right handed","Medium-rare",7
+"33","2020-09-03 01:31:07",1,"Male","More than 2 years",40,"WeChat","No","Yes",10,"brown","No",1,"Autumn",183,"Weekly","Yes","Right handed","Medium-well done",8
+"34","2020-09-03 01:42:26",0,"Male","Between 12 months and 2 years",40,"wechat","No","Yes",8,"brown","No",0,"Autumn",180,NA,"Yes","Right handed","Medium-well done",7
+"35","2020-09-03 06:53:19",2,"Male","Less than 6 months",20,"facebook","Yes","Yes",3,"black","No",0,"Winter",175,"Most days","Yes","Right handed","Medium-rare",2
+"36","2020-09-03 07:43:10",0,"Male","Between 6 and 12 months",10,"Reddit","No","Yes",4,"brown","No",8,"Spring",181,"Less than once a week","Yes","Right handed","Well done",6
+"37","2020-09-03 07:48:03",0,"Male","Between 12 months and 2 years",98,"Facebook","Yes","Yes",5,"brown","Yes",0,"Autumn",183,"Weekly","No","Right handed","Medium-rare",7
+"38","2020-09-03 07:48:08",0,"Male","Less than 6 months",35,"Reddit","Yes","Yes",0,"brown","Yes",0,"Winter",150,"Most days","No","Right handed","Medium-rare",2
+"39","2020-09-03 08:02:32",0,"Male","Between 12 months and 2 years",35,"facebook","No","Yes",7,"black","No",3,"Spring",175,"Weekly","Yes","Right handed","Medium-rare",3
+"40","2020-09-03 08:17:39",0,"Female","Between 6 and 12 months",25,NA,"No","Yes",NA,"brown","No",15,"Autumn",NA,"Every day","Yes","Right handed","Medium-rare",7
+"41","2020-09-03 08:22:53",0,"Female","More than 2 years",52,"Wechat","No","Yes",0,"brown","No",0,"Spring",160,"Less than once a week","Yes","Right handed","Medium",9
+"42","2020-09-03 08:29:00",2,"Male","Less than 6 months",25,NA,"Yes","Yes",2.5,"blue","No",8,"Autumn",174,"Weekly","Yes","Right handed","I don't eat beef",8
+"43","2020-09-03 08:45:28",0,"Female","Between 6 and 12 months",40,"Twitter","No","Yes",7,"brown","No",20,"Summer",160,"Weekly","No","Right handed","Medium-rare",3
+"44","2020-09-03 08:47:48",0,"Male","Less than 6 months",20,"Reddit","No","Yes",5,"brown","No",0,"Winter",176,"Most days","No","Right handed","Medium-rare",6
+"45","2020-09-03 09:32:34",0,"Male","Between 12 months and 2 years",40,"None","Yes","No",5,"brown","No",10,"Winter",176,"Every day","Yes","Right handed","Medium-well done",5
+"46","2020-09-03 09:51:17",0,"Female","More than 2 years",25,"Instagram","No","No",3,"brown","No",1,"Spring",169,"Less than once a week","Yes","Left handed","Medium-rare",6
+"47","2020-09-03 09:59:36",1,"Male","More than 2 years",15,NA,"No","Yes",5,"black","No",0,"Summer",180,"Every day","Yes","Right handed","Medium-well done",5
+"48","2020-09-03 10:16:29",1,"Female","Between 12 months and 2 years",39,"Instagram","No","No",1,"brown","No",0,"Autumn",154,"Most days","Yes","Right handed","Medium",7
+"49","2020-09-03 10:50:04",0,"Male","Between 12 months and 2 years",25,"Twitter","Yes","No",2,"black","No",25,"Summer",175,"Less than once a week","Yes","Right handed","Medium-rare",8
+"50","2020-09-03 10:52:52",0,"Female","Less than 6 months",40,"tiktok","Yes","Yes",3,"blue","Yes",12,"Winter",173,"Every day","No","Right handed","I don't eat beef",8
+"51","2020-09-03 11:26:28",0,"Female","Between 12 months and 2 years",40,"instagram","No","No",2,"brown","No",0,"Winter",160,"Most days","Yes","Right handed","Medium",6
+"52","2020-09-03 11:38:33",0,"Male","Between 6 and 12 months",40,"instagram","No","No",5,"brown","No",0,"Spring",183,"Less than once a week","No","Left handed","Medium-rare",2
+"53","2020-09-03 11:41:03",0,"Male","Between 6 and 12 months",20,"Tiktok","No","Yes",5,"brown","No",2,"Summer",191,"Less than once a week","No","Right handed","Medium-rare",6
+"54","2020-09-03 12:09:38",0,"Female","Between 6 and 12 months",0,"INSTAGRAM","No","No",2.5,"brown","No",10,"Autumn",158,"Less than once a week","Yes","Right handed","Well done",6
+"55","2020-09-03 12:10:04",0,"Male","Less than 6 months",40,"messenger","Yes","No",7,"hazel","No",0,"Spring",178,"Weekly","Yes","Right handed","Medium-rare",10
+"56","2020-09-03 12:10:08",0,"Male","Less than 6 months",40,"TikTok","Yes","Yes",10,"blue","No",15,"Summer",178,"Less than once a week","No","Right handed","Medium-rare",4
+"57","2020-09-03 12:10:15",0,"Male","Between 6 and 12 months",10,"Tiktok","Yes","No",7,"brown","No",0,"Summer",172,"Every day","Yes","Right handed","Medium-well done",7
+"58","2020-09-03 12:29:20",2,"Male","Between 12 months and 2 years",35,"4chan","Yes","Yes",5,"black","No",0,"Spring",NA,"Less than once a week","Yes",NA,"I don't eat beef",10
+"59","2020-09-03 12:30:21",0,"Female","More than 2 years",30,"Wechat","No","No",1,"hazel","No",7,"Spring",158,"Weekly","Yes","Right handed","Medium",9
+"60","2020-09-03 12:45:14",0,"Female","Between 6 and 12 months",8,"Instagram","No","Yes",3,"brown","No",20,"Autumn",168,"Weekly","Yes","Right handed","Medium-rare",9
+"61","2020-09-03 12:48:40",2,"Male","Between 12 months and 2 years",24,"ins","No","Yes",3,"brown","No",0,"Autumn",186,"Every day","Yes","Right handed","Medium-rare",4
+"62","2020-09-03 13:28:05",0,"Male","More than 2 years",6,"Wechat","No","Yes",0,"black","No",0,"Summer",170,"Less than once a week","No","Right handed","Medium-well done",3
+"63","2020-09-03 13:45:47",0,"Male","Between 6 and 12 months",12,"None of them","No","Yes",0,"brown","No",27,"Spring",174,NA,"No","Right handed","Medium-rare",NA
+"64","2020-09-03 13:48:12",1,"Female","Between 6 and 12 months",30,"instagram","Yes","No",2,"blue","No",8,"Summer",152,"Every day","Yes","Right handed","Medium-rare",1
+"65","2020-09-03 14:08:19",0,"Male","Between 12 months and 2 years",50,"WeChat","Yes","Yes",8,"black","No",0,"Autumn",175,"Every day","Yes","Right handed","Medium",5
+"66","2020-09-03 14:10:18",0,"Female",NA,40,"Twitter","No","Yes",NA,"dark brown","No",NA,"Winter",165,NA,"Yes","Right handed","Medium-rare",7
+"67","2020-09-03 14:25:17",0,"Male","Between 6 and 12 months",0,NA,"No","Yes",NA,NA,"No",NA,"Winter",NA,"Less than once a week","Yes","Right handed","Medium-rare",8
+"68","2020-09-03 14:25:48",1,"Male","Between 6 and 12 months",7,"Instragram","Yes","Yes",3,"green","No",25,"Spring",170,"Weekly","No","Left handed","Medium-rare",3
+"69","2020-09-03 14:25:52",0,"Male","Between 6 and 12 months",45,"Facebook","Yes","Yes",8,"blue","No",8,"Spring",175,"Less than once a week","No","Right handed","Medium-rare",6
+"70","2020-09-03 14:26:09",0,"Female","Between 6 and 12 months",15,"Reddit","No","Yes",4,"brown","Yes",16,"Spring",149.5,"Less than once a week","Yes","Right handed","Rare",5
+"71","2020-09-03 14:26:54",0,"Female","Between 6 and 12 months",25,"Instagram","Yes","Yes",4,"hazel","No",30,"Spring",172,"Weekly","Yes","Right handed","Medium-well done",10
+"72","2020-09-03 14:26:59",1,"Male","Less than 6 months",24,"Instagram","Yes","Yes",3,"blue","Yes",20,"Spring",183,"Weekly","No","Right handed","Medium-rare",7
+"73","2020-09-03 14:27:56",1,"Female","Less than 6 months",55,"WeChat","No","Yes",3.5,"black","No",0,"Summer",155,"Weekly","Yes","Right handed","Medium",7
+"74","2020-09-03 14:29:12",0,"Male","Between 6 and 12 months",25,"YouTube","No","No",4,"black","No",0,"Summer",181,"Less than once a week","Yes",NA,"Medium",5
+"75","2020-09-03 14:29:16",0,"Female","Between 6 and 12 months",45,"facebook","Yes","Yes",5,"brown","No",10,"Spring",173,"Every day","No","Right handed","Medium",4
+"76","2020-09-03 14:29:48",1,"Female","Less than 6 months",35,"wechat","Yes","Yes",9,"black","No",0,"Summer",167,"Most days","Yes","Right handed","Medium-well done",5
+"77","2020-09-03 14:30:50",0,"Female","More than 2 years",50,"Instagram","No","No",1,"dark brown","No",0,"Spring",175,"Less than once a week","Yes","Right handed","I don't eat beef",5
+"78","2020-09-03 14:36:18",0,"Female","Between 12 months and 2 years",25,"WeChat","No","No",2,"black","No",0,"Summer",159,"Less than once a week","Yes","Right handed","Medium",8
+"79","2020-09-03 14:45:55",0,"Male","Less than 6 months",40,"Twitter","Yes","Yes",6,"blue","No",15,"Summer",183,"Weekly","Yes","Left handed","Medium-rare",8
+"80","2020-09-03 15:00:11",0,"Male","More than 2 years",25,"Ed","No","No",0,"black","No",0,"Winter",170,"Every day","Yes","Right handed","Medium-well done",10
+"81","2020-09-03 15:22:50",0,"Female","Between 12 months and 2 years",45,"no","Yes","No",4,"black","No",0,"Autumn",160,"Less than once a week","No","Right handed","Medium-well done",7
+"82","2020-09-03 15:32:37",0,"Male","Between 12 months and 2 years",20,"Facebook","No","Yes",6,"brown","No",3,"Summer",180,"Less than once a week","No","Left handed","Medium-rare",4
+"83","2020-09-03 15:40:48",0,"Male","Between 12 months and 2 years",40,"Messenger","Yes","Yes",4,"hazel","Yes",0,"Summer",193,"Less than once a week","No","Right handed","Medium-rare",6
+"84","2020-09-03 15:42:37",0,"Male","Between 6 and 12 months",42,NA,"No","No",3.5,"brown","No",0,"Summer",183,"Less than once a week","Yes","Right handed","Medium-well done",5
+"85","2020-09-03 15:45:23",0,"Male","Between 6 and 12 months",15,"facebook","Yes","Yes",8,"blue","No",5,"Spring",178,"Less than once a week","Yes","Right handed","Medium",7
+"86","2020-09-03 15:47:18",6,NA,"Between 6 and 12 months",2,"linkedin","No","No",5,"black","No",25,"Winter",147,"Most days","Yes",NA,"Rare",5
+"87","2020-09-03 15:51:05",3,"Male","Less than 6 months",170,"canvas discussion board","No","No",70,NA,"Yes",70,"Summer",195,"Weekly","No",NA,"Medium",6
+"88","2020-09-03 16:20:21",0,"Male","Between 12 months and 2 years",16,"Facebook","Yes","No",10,"brown","No",3,"Summer",179,"Less than once a week","No","Right handed","Medium-rare",8
+"89","2020-09-03 16:46:54",0,"Male","Between 6 and 12 months",0,"Discord","Yes","Yes",3,"brown","Yes",6,"Autumn",171,"Less than once a week","Yes","Left handed","Medium-rare",6
+"90","2020-09-03 16:47:33",1,"Male","Less than 6 months",20,"Reddit","Yes","Yes",4,"green","No",10,"Spring",180,"Less than once a week","No","Left handed","Medium-rare",5
+"91","2020-09-03 16:51:15",1,"Male","Less than 6 months",10,"youtube","No","Yes",8,"black","No",0,"Summer",172,"Every day","Yes","Right handed","Medium-well done",5
+"92","2020-09-03 16:52:48",0,"Male","Between 6 and 12 months",2,"Instagram","No","No",2,"black","No",0,"Autumn",165,"Less than once a week","Yes","Right handed","I don't eat beef",5
+"93","2020-09-03 16:53:57",0,"Male","Between 6 and 12 months",40,"Facebook","No","Yes",1,"dark brown","No",0,"Spring",180,"Less than once a week","No","Left handed","Medium",2
+"94","2020-09-03 17:13:50",0,"Male","Less than 6 months",36,"Reddit","No","Yes",3.5,"brown","No",0,"Winter",169,"Every day","Yes","Left handed","Medium-rare",4
+"95","2020-09-03 17:14:48",0,"Female","Less than 6 months",0,"Instangram","Yes","Yes",8,"brown","No",0,"Summer",155,"Every day","Yes","Right handed","Medium",10
+"96","2020-09-03 17:54:27",0,"Male","Between 6 and 12 months",40,"StackedExchange","No","No",5,"hazel","Yes",20,"Spring",191,NA,"No","Right handed","Medium-well done",9
+"97","2020-09-03 18:03:25",4,"Male","Between 6 and 12 months",40,"Google+","Yes","No",0,NA,"No",0,"Winter",193,"Less than once a week","No",NA,"Medium-well done",10
+"98","2020-09-03 18:09:43",0,"Male","Between 6 and 12 months",30,"Facebook","No","Yes",7,"brown","No",0,"Autumn",182,"Less than once a week","No","Right handed","Medium",8
+"99","2020-09-03 18:32:05",1,"Male","Between 6 and 12 months",5,"Facebook","Yes","Yes",12,"brown","No",7,"Summer",175,"Weekly","No","Right handed","Medium-rare",0
+"100","2020-09-03 19:11:51",0,"Male","Between 6 and 12 months",20,"WeChat","No","No",5,"brown","No",0,"Summer",180,"Less than once a week","No","Right handed","Medium-rare",5
+"101","2020-09-03 19:48:12",0,"Female","Less than 6 months",0,"Instangram","Yes","Yes",8,"brown","No",0,"Summer",155,"Every day","Yes","Right handed","Medium",10
+"102","2020-09-03 19:56:46",10,"Male","More than 2 years",35,"Instagram","No","No",2,"black","No",4,"Summer",182,"Every day","No","Right handed","Medium-well done",9
+"103","2020-09-03 20:00:18",0,"Male","More than 2 years",14,"Facebook","No","No",1,"dark brown","No",0,"Spring",188,"Every day","Yes","Right handed","Medium-well done",3
+"104","2020-09-03 20:22:00",0,"Male","Less than 6 months",35,"Instagram","Yes","Yes",5,"brown","No",10,"Summer",181,"Less than once a week","Yes","Right handed","I don't eat beef",5
+"105","2020-09-03 20:34:13",0,"Male","Between 6 and 12 months",20,"Facebook","Yes","Yes",7,"black","No",9,"Summer",181,"Less than once a week","No","Right handed","I don't eat beef",8
+"106","2020-09-03 20:36:06",0,"Male","Between 12 months and 2 years",2,"Instagram","No","No",7,"black","No",0,"Spring",175,"Every day","Yes","Right handed","Medium-well done",5
+"107","2020-09-03 20:38:02",0,"Male","Between 12 months and 2 years",30,"Facebook","Yes","Yes",8,"blue","No",8,"Summer",185,"Less than once a week","No","Right handed","Medium-well done",6
+"108","2020-09-03 20:43:25",3,"Male","Between 6 and 12 months",NA,"WeChat","No","Yes",5,"black","No",0,NA,NA,NA,NA,NA,NA,NA
+"109","2020-09-03 20:56:04",1,"Male","Less than 6 months",15,"Instagram","Yes","Yes",5,"brown","No",24,"Winter",181,"Every day","No","Right handed","Medium-rare",1
+"110","2020-09-03 21:11:39",3,"Male","More than 2 years",70,"QQ","Yes","Yes",21,"black","No",NA,"Winter",180,"Every day","Yes","Right handed",NA,5
+"111","2020-09-03 21:50:41",0,"Male","Less than 6 months",10,"WeChat","No","No",0.5,"black","No",0,"Summer",175,"Weekly","Yes","Right handed","Well done",8
+"112","2020-09-03 21:51:54",0,"Male","Less than 6 months",30,"Wechat","No","No",3,"black","Yes",35,"Spring",172,"Every day","Yes","Right handed","Medium-rare",8
+"113","2020-09-03 22:01:40",0,"Male","Between 6 and 12 months",26,"TikTok","No","Yes",4,"black","No",0,"Spring",172,"Less than once a week","Yes","Right handed","Medium-rare",4
+"114","2020-09-03 22:31:24",0,"Male","Between 12 months and 2 years",25,"Facebook","No","Yes",NA,"brown","No",20,"Spring",NA,NA,"Yes","Right handed","I don't eat beef",7
+"115","2020-09-03 22:35:03",0,"Male","More than 2 years",15,"Tiktok","No","No",3,"brown","No",1,"Summer",180,"Less than once a week","Yes","Right handed","Well done",7
+"116","2020-09-03 22:44:49",0,"Male","Between 6 and 12 months",40,"Snapchat","Yes","Yes",6,"brown","Yes",4,"Summer",177,"Less than once a week","No",NA,"Medium-rare",2
+"117","2020-09-03 23:37:12",1,"Female","Between 12 months and 2 years",40,"Tik Tok","No","Yes",2,"hazel","No",3,"Spring",172,"Less than once a week","Yes","Right handed","Medium-rare",8
+"118","2020-09-03 23:40:17",3,"Male","More than 2 years",22,NA,"No","Yes",10,NA,"No",0,"Autumn",NA,"Less than once a week","No","Right handed","Medium-well done",9
+"119","2020-09-04 00:04:41",0,"Male","Between 6 and 12 months",50,"YouTube","Yes","Yes",2,"brown","No",2,"Autumn",175,"Every day","No","Right handed","Well done",6
+"120","2020-09-04 00:10:15",1,"Female","Between 6 and 12 months",40,"Messenger","Yes","Yes",4,"dark brown","Yes",2,"Spring",164,"Less than once a week","Yes","Right handed","Medium-rare",8
+"121","2020-09-04 00:30:00",0,"Male","Less than 6 months",20,"YouTube","Yes","Yes",0,"brown","Yes",20,"Winter",165,"Less than once a week","No","Left handed","Medium",2
+"122","2020-09-04 08:35:02",0,"Female","Between 6 and 12 months",45,NA,"No","Yes",3,"brown","No",75,"Winter",164,"Weekly","No",NA,"I don't eat beef",10
+"123","2020-09-04 09:31:35",0,"Male","Between 6 and 12 months",45,"Facebook","Yes","Yes",6,"brown","No",7,"Summer",180,"Every day","No","Right handed","Medium",5
+"124","2020-09-04 09:32:56",0,"Male","Between 6 and 12 months",30,"Facebook","No","Yes",0,"brown","No",3,"Spring",178,"Less than once a week","No","Right handed","Medium-well done",3
+"125","2020-09-04 09:48:44",0,"Male","More than 2 years",50,"wechat","No","No",5,"brown","No",0,"Autumn",175,"Every day","Yes","Right handed","Medium-well done",8
+"126","2020-09-04 09:58:50",1,NA,"Less than 6 months",NA,NA,"Yes","Yes",1,"blue","No",4,"Winter",175,"Less than once a week","No","Right handed","Medium-well done",9
+"127","2020-09-04 10:38:55",0,"Male","Between 6 and 12 months",30,"Reddit","No","Yes",5,"brown","No",0,"Winter",180,"Most days","Yes","Right handed","Medium-well done",7
+"128","2020-09-04 11:13:01",0,"Male","Between 6 and 12 months",20,"instagram","Yes","No",6,"brown","No",15,"Summer",176,"Less than once a week","Yes","Left handed","Medium-rare",9
+"129","2020-09-04 11:30:19",0,"Male","More than 2 years",24,"wechat","No","No",3,"black","Yes",0,"Winter",180,"Every day","Yes","Right handed","Medium-rare",9
+"130","2020-09-04 11:38:28",0,"Male","Between 6 and 12 months",NA,NA,"Yes","No",NA,"green","Yes",0,"Autumn",185,"Less than once a week","Yes","Right handed","Rare",9
+"131","2020-09-04 11:59:51",0,"Male","Less than 6 months",30,"Reddit","No","Yes",10,"blue","No",4,"Autumn",183,"Less than once a week","No","Right handed","Medium-rare",3
+"132","2020-09-04 12:07:47",1,"Male","Less than 6 months",20,"ins","No","Yes",5,"black","No",0,"Summer",182,"Less than once a week","Yes","Right handed","Well done",5
+"133","2020-09-04 12:22:18",1,"Female","Between 6 and 12 months",22,"Facebook Messenger","Yes","Yes",2,"blue","No",6,"Summer",179,"Less than once a week","No","Right handed","Medium-rare",4
+"134","2020-09-04 12:47:17",2,"Female","Less than 6 months",50,"instagram","Yes","No",4,"brown","Yes",21,"Spring",171,"Weekly","No","Right handed","I don't eat beef",7
+"135","2020-09-04 15:17:25",1,"Male","Between 6 and 12 months",30,"Ed","No","Yes",8,"hazel","No",10,"Autumn",182,"Most days","No","Right handed","Medium-rare",3
+"136","2020-09-04 17:47:04",0,"Male","Less than 6 months",20,"Reddit","No","Yes",20,"brown","No",6,"Summer",182,"Less than once a week","No","Right handed","Medium-rare",3
+"137","2020-09-04 17:59:38",2,"Male","Between 6 and 12 months",30,"Facebook","No","Yes",5,"brown","Yes",0,"Summer",183,"Less than once a week","No","Right handed","Medium-rare",7
+"138","2020-09-04 19:24:03",0,"Female","Less than 6 months",35,"Reddit","No","No",0,"black","No",1,"Autumn",177,"Every day","Yes","Right handed","Medium-rare",7
+"139","2020-09-04 20:06:39",0,"Male","Between 12 months and 2 years",20,"None","No","Yes",10,"brown","No",0,"Winter",178,"Weekly","No","Right handed","Medium-rare",7
+"140","2020-09-04 23:50:13",0,"Female","Between 6 and 12 months",15,"Instagram","No","Yes",3,"brown","No",14,"Summer",173,"Weekly","Yes","Right handed","Medium",1
+"141","2020-09-05 01:43:46",1,"Male","Between 12 months and 2 years",20,"Youtube","Yes","Yes",5,"hazel","No",20,"Autumn",177,"Less than once a week","No","Right handed","Medium-rare",9
+"142","2020-09-05 14:29:37",0,"Female","Between 6 and 12 months",20,NA,"Yes","No",4,"brown","No",20,"Spring",162,"Most days","No","Right handed","Medium-rare",7
+"143","2020-09-05 14:47:31",2,"Male","Between 12 months and 2 years",30,"Instagram","Yes","Yes",10,"dark brown","No",0,"Spring",170,"Weekly","Yes","Left handed","Medium-rare",8
+"144","2020-09-05 17:13:32",0,"Female","Between 6 and 12 months",20,"instagram","Yes","No",3,"brown","No",8,"Autumn",158,"Less than once a week","Yes","Right handed","Medium-rare",7
+"145","2020-09-05 20:22:00",0,"Female","Between 6 and 12 months",50,"insta","Yes","No",7,"dark brown","No",10,"Spring",169,"Most days","Yes","Right handed","Medium",7
+"146","2020-09-06 04:24:10",3,"Male","More than 2 years",6,"Instagram","No","Yes",1,"brown","No",0,"Summer",178,"Less than once a week","Yes","Right handed","Well done",10
+"147","2020-09-06 10:16:38",0,NA,"Less than 6 months",30,"Twitter","Yes","Yes",7,"hazel","No",0,"Winter",163,"Less than once a week","Yes","Right handed","Medium-well done",6
+"148","2020-09-06 13:09:49",0,"Female","Between 12 months and 2 years",22,"Facebook","No","Yes",3,"brown","No",12,"Autumn",162,"Weekly","No","Right handed","Medium-rare",7
+"149","2020-09-06 13:25:01",2,"Female","Between 12 months and 2 years",6,"facebook","No","No",0,"green","No",2,"Autumn",162,"Less than once a week","No","Right handed","I don't eat beef",7
+"150","2020-09-06 14:57:10",0,"Male","Between 12 months and 2 years",10,"Reddit","Yes","Yes",5,"dark brown","No",0,"Autumn",172,"Most days","No","Right handed","Medium-rare",7
+"151","2020-09-06 15:18:28",0,"Male","Between 6 and 12 months",6,NA,"Yes","Yes",0,"blue","No",2,"Winter",180,"Weekly","No","Right handed","Medium-rare",4
+"152","2020-09-06 17:41:09",0,"Male","Between 6 and 12 months",30,"youtube","Yes","Yes",4,"black","No",0,"Autumn",179,"Every day","Yes","Right handed","Rare",7
+"153","2020-09-06 18:09:22",0,"Female","Between 6 and 12 months",40,"ins","No","No",4,"black","No",0,"Autumn",180,"Every day","Yes","Left handed","Medium",6
+"154","2020-09-06 19:00:09",0,"Male","Between 12 months and 2 years",34,"Twitter","Yes","Yes",4,"brown","No",0,"Summer",173,"Most days","No","Right handed","Medium-rare",7
+"155","2020-09-06 19:53:16",0,"Male","Between 12 months and 2 years",26,"wechat","No","No",NA,NA,"No",0,NA,190,NA,"Yes","Right handed","Medium-well done",6
+"156","2020-09-06 20:34:36",0,"Male","Between 6 and 12 months",20,"Facebook","No","Yes",4,"brown","No",3,"Spring",183,"Every day","Yes","Right handed","Medium-rare",2
+"157","2020-09-06 20:55:04",0,"Female","Between 6 and 12 months",18,"facebook","No","No",0,"brown","No",5,"Summer",170.5,"Less than once a week","Yes","Right handed","Medium-rare",10
+"158","2020-09-06 21:25:09",0,"Female","Between 12 months and 2 years",40,"Wechat","Yes","No",1,"black","No",0,"Spring",163,"Less than once a week","Yes","Right handed","Medium-rare",9
+"159","2020-09-06 21:59:08",0,"Male","Between 12 months and 2 years",20,"Reddit","No","Yes",6,"brown","No",15,"Winter",183,"Every day","Yes","Right handed","Medium-rare",6
+"160","2020-09-06 22:09:09",5,"Male","Less than 6 months",56,"WeChat","Yes","Yes",2,"black","No",10,"Winter",180,"Less than once a week","No","Right handed","Well done",9
+"161","2020-09-07 00:00:15",0,"Male","Between 6 and 12 months",35,"Reddit","No","Yes",6,"black","No",20,"Winter",174,"Less than once a week","Yes","Right handed","I don't eat beef",8
+"162","2020-09-07 08:27:30",0,"Male","Between 12 months and 2 years",0,"Facebook messanger","Yes","Yes",5,"hazel","No",7,"Summer",173,"Less than once a week","No","Right handed","Medium-rare",7
+"163","2020-09-07 10:35:43",1,"Female","Between 6 and 12 months",40,"facebook","Yes","Yes",1,"dark brown","No",3,"Summer",160,"Less than once a week","Yes","Right handed","Medium-rare",7
+"164","2020-09-07 11:01:43",0,"Female","Between 6 and 12 months",30,"Instagram","Yes","No",5,"dark brown","Yes",2,"Spring",170,"Weekly","Yes","Right handed","I don't eat beef",9
+"165","2020-09-07 12:22:56",0,"Female","Between 6 and 12 months",30,"Pinterest","No","Yes",3,"brown","No",28,"Summer",173,"Weekly","No","Right handed","I don't eat beef",7
+"166","2020-09-07 15:13:08",0,"Male","Between 6 and 12 months",20,"tiktok","Yes","Yes",7,"brown","No",15,"Winter",175,"Less than once a week","No","Right handed","I don't eat beef",6
+"167","2020-09-07 16:46:13",2,"Female","Between 6 and 12 months",40,"facebook","Yes","No",5,"blue","No",0,"Autumn",165,"Less than once a week","Yes","Right handed","Medium-rare",3
+"168","2020-09-07 17:00:46",0,"Female","Between 6 and 12 months",28,"bilibili","No","No",5,"brown","No",0,"Autumn",165,"Every day","No","Right handed","Well done",9
+"169","2020-09-07 17:56:02",1,"Male","Between 6 and 12 months",20,"Facebook","Yes","Yes",6,"blue","No",12,"Summer",180,"Less than once a week","No","Right handed","Rare",10
+"170","2020-09-07 18:26:30",0,"Male","Between 12 months and 2 years",30,"Reddit","Yes","No",2,"brown","No",2,"Winter",178,"Most days","Yes","Right handed","Medium-well done",7
+"171","2020-09-07 20:53:54",0,"Female","Less than 6 months",30,"Snapchat","No","Yes",6,"brown","No",16,"Spring",164,"Weekly","Yes","Right handed","Medium",7
+"172","2020-09-07 21:29:19",0,"Female","More than 2 years",40,"WeChat","No","No",5,"black","No",0,"Summer",165,"Most days","No","Right handed","Medium-well done",2
