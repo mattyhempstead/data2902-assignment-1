@@ -16,17 +16,14 @@ library(shinyjs)
 # rsconnect::deployApp('.')
 
 
-y_var_choices = c("Apparent temperatureddw" = "apparent_t",
-                  "Dew point" = "dewpt")
-
-binary_cols = c("","Gender (Cisgender only)" = "gender",
+binary_cols = c("Gender (Cisgender only)" = "gender",
                 "Dog/Cat" = "dog_or_cat",
                 "Living with parents" = "live_with_parents",
                 "Asthma" = "asthma",
                 "Glasses/Contacts" = "glasses",
                 "Dominant hand (Excluding ambidextrous)" = "dominant_hand")
 
-interval_cols = c("","University hours"="university_work",
+interval_cols = c("University hours"="university_work",
                   "Exercising hours"="exercising",
                   "Paid work hours"="paid_work",
                   "Height (cm)"="height",
@@ -59,14 +56,8 @@ ui <- pageWithSidebar(
     sidebarPanel(
         useShinyjs(),
         
-        # sliderInput("obs",
-        #             "Number of observations:",
-        #             min = 1,
-        #             max = 1000, 
-        #             value = 500),
-        
         selectInput("test_type", "Testing Method", 
-                    choices = c("Two-sample t-test", "Chi-squared test")),
+                    choices = c("Two-sample t-test")),
         
         selectInput("binary_dataset", "Binary Data", 
                     choices = binary_cols),
@@ -78,8 +69,34 @@ ui <- pageWithSidebar(
     
     # Show a plot of the generated distribution
     mainPanel(
-        h3(textOutput("question")),
-        plotOutput("boxPlot")
+        h2(textOutput("question")),
+        HTML('<br>'),
+        tabsetPanel(
+            #tabPanel("Question", h3(textOutput("question"))),
+            tabPanel("Data Visualisation", div(style="width:90%;padding-left:1em",fluidRow(
+                HTML("<br>"),
+                h4("To determine whether the mean differs, we should first analyse the spread and location of both groups."),
+                h4("This may also reveal outliers (hollow dots), which will be ignored during testing."),
+                plotOutput("boxPlot")
+            ))),
+            tabPanel("Assumptions", div(style="width:90%;padding-left:1em",fluidRow(
+                HTML("<br>"),
+                h4("To perform a two-sample t-test, we require the assumption that both samples come from a normal distribution."),
+                h4(textOutput("assumptionsText")),
+                plotOutput("assumptionsPlot")
+            ))),
+            tabPanel("Statistical Test", div(style="width:80%;padding-left:1em",fluidRow(
+                HTML("<br>"),
+                h4("If the assumption of normality is satisfied, we can perform a two-sample t-test to check if the means differ."),
+                HTML("<br>"),
+                verbatimTextOutput("testOutput"),
+                HTML("<br>"),
+                h4(textOutput("testConclusion")),
+                h4(textOutput("testConclusion2"), width="20%")
+            )))
+            #tabPanel("dwa", plotOutput("boxPlot"))
+        )
+        
     )
 )
 
@@ -124,9 +141,9 @@ server <- function(input, output) {
         samples_type_1 = samples[samples[input$binary_dataset] == binary_type_1,]
         samples_type_2 = samples[samples[input$binary_dataset] == binary_type_2,]
         
-        print(input$binary_dataset)
-        print(names(which(binary_cols == input$binary_dataset)))
-        
+        # print(input$binary_dataset)
+        # print(names(which(binary_cols == input$binary_dataset)))
+        # 
         bplot = boxplot(
             unlist(samples_type_1[input$interval_dataset]),
             unlist(samples_type_2[input$interval_dataset]),
@@ -140,6 +157,126 @@ server <- function(input, output) {
                        toupper(col_names_short[input$binary_dataset])),
             col=c("light blue","light green")
         )
+    })
+    
+    output$assumptionsText <- renderPrint({
+        if (input$binary_dataset == "" | input$interval_dataset == "") {
+            cat("Please select both input variables...")
+        } else {
+            binary_name = names(which(binary_cols == input$binary_dataset))
+            interval_name = names(which(interval_cols == input$interval_dataset))
+            binary_name = (col_names_short[input$binary_dataset])
+            interval_name = (col_names_short[input$interval_dataset])
+            cat("We can approximately determine this by plotting", interval_name,"for both groups of", binary_name, "onto a QQ-plot.")
+        }
+    })
+    
+    output$assumptionsPlot <- renderPlot({
+        if (input$binary_dataset == "" | input$interval_dataset == "") return()
+        
+        binary_name = names(which(binary_cols == input$binary_dataset))
+        interval_name = names(which(interval_cols == input$interval_dataset))
+        
+        samples = df[!is.na(df[input$binary_dataset]) & !is.na(df[input$interval_dataset]),]
+        
+        binary_type_1 = unique(samples[input$binary_dataset])[1,]
+        binary_type_2 = unique(samples[input$binary_dataset])[2,]
+        
+        samples_type_1 = samples[samples[input$binary_dataset] == binary_type_1,]
+        samples_type_2 = samples[samples[input$binary_dataset] == binary_type_2,]
+        
+        samples_type_1_interval = unlist(samples_type_1[input$interval_dataset])
+        samples_type_2_interval = unlist(samples_type_2[input$interval_dataset])
+        samples_type_1_interval = samples_type_1_interval[!samples_type_1_interval %in% boxplot(samples_type_1_interval)$out]
+        samples_type_2_interval = samples_type_2_interval[!samples_type_2_interval %in% boxplot(samples_type_2_interval)$out]
+        
+
+        par(mfrow=c(1,2))
+        qqnorm(
+            samples_type_1_interval, 
+            main=paste("QQ-Plot of", col_names_short[input$interval_dataset], "for", col_names_short[input$binary_dataset], "=", binary_type_1), 
+            col="dark green"
+        )
+        qqline(samples_type_1_interval)
+        qqnorm(
+            samples_type_2_interval, 
+            main=paste("QQ-Plot of", col_names_short[input$interval_dataset], "for", col_names_short[input$binary_dataset], "=", binary_type_2), 
+            col="blue"
+        )
+        qqline(samples_type_2_interval)
+    })
+    
+    testResults <- reactive({  
+        "Reacting"
+        
+        if (input$binary_dataset == "" | input$interval_dataset == "") return()
+        
+        binary_name = names(which(binary_cols == input$binary_dataset))
+        interval_name = names(which(interval_cols == input$interval_dataset))
+        samples = df[!is.na(df[input$binary_dataset]) & !is.na(df[input$interval_dataset]),]
+        binary_type_1 = unique(samples[input$binary_dataset])[1,]
+        binary_type_2 = unique(samples[input$binary_dataset])[2,]
+        samples_type_1 = samples[samples[input$binary_dataset] == binary_type_1,]
+        samples_type_2 = samples[samples[input$binary_dataset] == binary_type_2,]
+        samples_type_1_interval = unlist(samples_type_1[input$interval_dataset])
+        samples_type_2_interval = unlist(samples_type_2[input$interval_dataset])
+        samples_type_1_interval = samples_type_1_interval[!samples_type_1_interval %in% boxplot(samples_type_1_interval)$out]
+        samples_type_2_interval = samples_type_2_interval[!samples_type_2_interval %in% boxplot(samples_type_2_interval)$out]
+        
+        t.test(samples_type_1_interval, samples_type_2_interval)
+    })
+    
+    output$testOutput <- renderPrint({
+        if (input$binary_dataset == "" | input$interval_dataset == "") {
+            cat("Please select both input variables...")
+        } else {
+            binary_name = names(which(binary_cols == input$binary_dataset))
+            interval_name = names(which(interval_cols == input$interval_dataset))
+            binary_name = (col_names_short[input$binary_dataset])
+            interval_name = (col_names_short[input$interval_dataset])
+            
+            testResults()
+        }
+    })
+    
+    output$testConclusion <- renderPrint({
+        if (input$binary_dataset == "" | input$interval_dataset == "") {
+            cat("Please select both input variables...")
+        } else {
+            results = testResults()
+            cat(
+                "The t-test produces a test statistic of ", 
+                unlist(results["statistic"]), 
+                " and a p-value of ",
+                unlist(results["p.value"]),
+                ".",
+                sep=""
+            )
+        }
+    })
+    
+    output$testConclusion2 <- renderPrint({
+        if (input$binary_dataset == "" | input$interval_dataset == "") {
+            cat("Please select both input variables...")
+        } else {
+            results = testResults()
+            reject = unlist(results["p.value"]) < 0.05
+            if (unlist(results["p.value"]) < 0.05) {
+                cat(
+                    "As our p-value is less than 0.05, we reject the null hypothesis that the means are identical, and accept the alternative hypothesis that the means differ between ",
+                    col_names_short[input$binary_dataset],
+                    ".",
+                    sep=""
+                )
+            } else {
+                cat(
+                    "As our p-value is greater than 0.05, we accept the null hypothesis that the means are identical, and reject the alternative hypothesis that the means differ between ",
+                    col_names_short[input$binary_dataset],
+                    ".",
+                    sep=""
+                )
+            }
+        }
     })
 }
 
