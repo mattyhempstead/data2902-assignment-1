@@ -12,9 +12,13 @@ library(bomrang)
 library(ggplot2)
 library(plotly)
 library(shinyjs)
+library(tableHTML)
 
 # rsconnect::deployApp('.')
 
+test_types = c("",
+               "Two-sample t-test"="t-test",
+               "Fisher's exact test"="fisher")
 
 binary_cols = c("Gender (Cisgender only)" = "gender",
                 "Dog/Cat" = "dog_or_cat",
@@ -57,79 +61,126 @@ ui <- pageWithSidebar(
         useShinyjs(),
         
         selectInput("test_type", "Testing Method", 
-                    choices = c("Two-sample t-test")),
+                    choices = test_types),
         
-        selectInput("binary_dataset", "Binary Data", 
-                    choices = binary_cols),
+        conditionalPanel(
+            condition = "input.test_type != ''",
+            selectInput(
+                "binary_dataset", 
+                "Binary Dataset", 
+                choices = binary_cols
+            )
+        ),
         
-        selectInput("interval_dataset", "Nominal/Interval Data", 
-                    choices = interval_cols)
+        conditionalPanel(
+            condition = "input.test_type == 't-test'",
+            selectInput(
+                "interval_dataset", 
+                "Nominal/Interval Dataset", 
+                choices = interval_cols
+            )
+        ),
+        
+        conditionalPanel(
+            condition = "input.test_type == 'fisher'",
+            selectInput(
+                "binary2_dataset", 
+                "Binary Dataset (Secondary)",
+                choices = binary_cols,
+                selected = binary_cols[2]
+            )
+        )
+            
     ),
-
     
     # Show a plot of the generated distribution
     mainPanel(
-        h2(textOutput("question")),
+        h2(style="text-align:center; font-weight:bold", textOutput("question")),
         HTML('<br>'),
-        tabsetPanel(
-            #tabPanel("Question", h3(textOutput("question"))),
-            tabPanel("Data Visualisation", div(style="width:90%;padding-left:1em",fluidRow(
-                HTML("<br>"),
-                h4("To determine whether the mean differs, we should first analyse the spread and location of both groups."),
-                h4("This may also reveal outliers (hollow dots), which will be ignored during testing."),
-                plotOutput("boxPlot")
-            ))),
-            tabPanel("Assumptions", div(style="width:90%;padding-left:1em",fluidRow(
-                HTML("<br>"),
-                h4("To perform a two-sample t-test, we require the assumption that both samples come from a normal distribution."),
-                h4(textOutput("assumptionsText")),
-                plotOutput("assumptionsPlot")
-            ))),
-            tabPanel("Statistical Test", div(style="width:80%;padding-left:1em",fluidRow(
-                HTML("<br>"),
-                h4("If the assumption of normality is satisfied, we can perform a two-sample t-test to check if the means differ."),
-                HTML("<br>"),
-                verbatimTextOutput("testOutput"),
-                HTML("<br>"),
-                h4(textOutput("testConclusion")),
-                h4(textOutput("testConclusion2"), width="20%")
-            )))
-            #tabPanel("dwa", plotOutput("boxPlot"))
+        conditionalPanel(
+            condition = "input.test_type == 't-test'",
+            tabsetPanel(
+                tabPanel("Data Visualisation", div(style="width:90%;padding-left:1em",fluidRow(
+                    HTML("<br>"),
+                    h4("To determine whether the mean differs, we should first analyse the spread and location of both groups."),
+                    h4("This may also reveal outliers (hollow dots), which will be ignored during testing."),
+                    plotOutput("boxPlot")
+                ))),
+                tabPanel("T-Test", div(style="width:90%;padding-left:1em",fluidRow(
+                    HTML("<br>"),
+                    HTML("<h4><b>H<sub>0</sub></b>: The true means of both groups are identical.</h4>"),
+                    HTML("<h4><b>H<sub>1</sub></b>: The true means of both groups differ.</h4>"),
+                    HTML("<br>"),
+                    h4("To perform a two-sample t-test, we require the assumption that both samples come from a normal distribution."),
+                    h4(textOutput("assumptionsText")),
+                    plotOutput("assumptionsPlot")
+                ))),
+                tabPanel("Results", div(style="width:90%;padding-left:1em",fluidRow(
+                    HTML("<br>"),
+                    h4("Given the assumptions are satisfied, we can perform a two-sample t-test to check if the means differ."),
+                    HTML("<br>"),
+                    verbatimTextOutput("testOutput"),
+                    HTML("<br>"),
+                    h4(textOutput("testConclusion")),
+                    h4(textOutput("testConclusion2"), width="20%")
+                )))
+            )
+        ),
+        conditionalPanel(
+            condition = "input.test_type == 'fisher'",
+            tabsetPanel(
+                tabPanel("Data Visualisation", div(style="width:90%;padding-left:1em",fluidRow(
+                    HTML("<br>"),
+                    h4("We first visualise the 2x2 contingency to find the observed odds ratio."),
+                    HTML("<br>"),
+                    tableHTML_output("fisherContingencyTable"),
+                    HTML("<br>"),
+                    h4(textOutput("fisherOddsRatio"))
+                ))),
+                tabPanel("Fisher's Exact Test", div(style="width:90%;padding-left:1em",fluidRow(
+                    HTML("<br>"),
+                    HTML("<h4><b>H<sub>0</sub></b>: The odds ratio is equal to 1 (the groups are independant)</h4>"),
+                    HTML("<h4><b>H<sub>1</sub></b>: The odds ratio is not equal to 1 (the groups are dependant)</h4>"),
+                    HTML("<br>"),
+                    h4("To perform a Fisher's Exact Test, we require the assumption that all samples are iid.")
+                ))),
+                tabPanel("Results", div(style="width:90%;padding-left:1em",fluidRow(
+                    HTML("<br>"),
+                    h4("Given the assumptions are satisfied, we can perform a Fisher's Exact Test to determine if the odds ratio equals 1."),
+                    HTML("<br>"),
+                    verbatimTextOutput("fisherTestOutput"),
+                    HTML("<br>"),
+                    h4(textOutput("fisherTestConclusion")),
+                    h4(textOutput("fisherTestConclusion2"), width="20%")
+                )))
+            )
         )
-        
     )
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
     
-    
-    observeEvent(input$test_type, {
-        if(input$test_type == "Two-sample t-test"){
-            shinyjs::enable("binary_dataset")
-        }else{
-            shinyjs::disable("binary_dataset")
-        }
-    })
-    
-    #"Does the mean X change with Y"
-    
     # Generate a summary of the dataset
     output$question <- renderPrint({
-        if (input$binary_dataset == "" | input$interval_dataset == "") {
-            cat("Please select both input variables...")
-        } else {
+        if (input$test_type == "") {
+            cat("Please select a testing method.")
+        } else if (input$test_type == "t-test") {
             binary_name = names(which(binary_cols == input$binary_dataset))
             interval_name = names(which(interval_cols == input$interval_dataset))
             binary_name = toupper(col_names_short[input$binary_dataset])
             interval_name = toupper(col_names_short[input$interval_dataset])
             cat("Does the mean ", interval_name, " change with ", binary_name, "?", sep="")            
+        } else {
+            binary_name = names(which(binary_cols == input$binary_dataset))
+            binary2_name = names(which(binary_cols == input$binary2_dataset))
+            binary_name = toupper(col_names_short[input$binary_dataset])
+            binary2_name = toupper(col_names_short[input$binary2_dataset])
+            cat("Are ", binary_name, " and ", binary2_name, " independent?", sep="")  
         }
     })
     
     output$boxPlot <- renderPlot({
-        if (input$binary_dataset == "" | input$interval_dataset == "") return()
-        
         binary_name = names(which(binary_cols == input$binary_dataset))
         interval_name = names(which(interval_cols == input$interval_dataset))
 
@@ -141,9 +192,6 @@ server <- function(input, output) {
         samples_type_1 = samples[samples[input$binary_dataset] == binary_type_1,]
         samples_type_2 = samples[samples[input$binary_dataset] == binary_type_2,]
         
-        # print(input$binary_dataset)
-        # print(names(which(binary_cols == input$binary_dataset)))
-        # 
         bplot = boxplot(
             unlist(samples_type_1[input$interval_dataset]),
             unlist(samples_type_2[input$interval_dataset]),
@@ -160,20 +208,14 @@ server <- function(input, output) {
     })
     
     output$assumptionsText <- renderPrint({
-        if (input$binary_dataset == "" | input$interval_dataset == "") {
-            cat("Please select both input variables...")
-        } else {
-            binary_name = names(which(binary_cols == input$binary_dataset))
-            interval_name = names(which(interval_cols == input$interval_dataset))
-            binary_name = (col_names_short[input$binary_dataset])
-            interval_name = (col_names_short[input$interval_dataset])
-            cat("We can approximately determine this by plotting", interval_name,"for both groups of", binary_name, "onto a QQ-plot.")
-        }
+        binary_name = names(which(binary_cols == input$binary_dataset))
+        interval_name = names(which(interval_cols == input$interval_dataset))
+        binary_name = (col_names_short[input$binary_dataset])
+        interval_name = (col_names_short[input$interval_dataset])
+        cat("We can approximately determine this by plotting", interval_name,"for both groups of", binary_name, "onto a QQ-plot.")
     })
     
     output$assumptionsPlot <- renderPlot({
-        if (input$binary_dataset == "" | input$interval_dataset == "") return()
-        
         binary_name = names(which(binary_cols == input$binary_dataset))
         interval_name = names(which(interval_cols == input$interval_dataset))
         
@@ -207,10 +249,6 @@ server <- function(input, output) {
     })
     
     testResults <- reactive({  
-        "Reacting"
-        
-        if (input$binary_dataset == "" | input$interval_dataset == "") return()
-        
         binary_name = names(which(binary_cols == input$binary_dataset))
         interval_name = names(which(interval_cols == input$interval_dataset))
         samples = df[!is.na(df[input$binary_dataset]) & !is.na(df[input$interval_dataset]),]
@@ -227,57 +265,144 @@ server <- function(input, output) {
     })
     
     output$testOutput <- renderPrint({
-        if (input$binary_dataset == "" | input$interval_dataset == "") {
-            cat("Please select both input variables...")
-        } else {
-            binary_name = names(which(binary_cols == input$binary_dataset))
-            interval_name = names(which(interval_cols == input$interval_dataset))
-            binary_name = (col_names_short[input$binary_dataset])
-            interval_name = (col_names_short[input$interval_dataset])
-            
-            testResults()
-        }
+        testResults()
     })
     
     output$testConclusion <- renderPrint({
-        if (input$binary_dataset == "" | input$interval_dataset == "") {
-            cat("Please select both input variables...")
-        } else {
-            results = testResults()
+        results = testResults()
+        cat(
+            "The t-test produces a test statistic of ", 
+            unlist(results["statistic"]), 
+            " and a p-value of ",
+            unlist(results["p.value"]),
+            ".",
+            sep=""
+        )
+    })
+    
+    output$testConclusion2 <- renderPrint({
+        results = testResults()
+        reject = unlist(results["p.value"]) < 0.05
+        if (unlist(results["p.value"]) < 0.05) {
             cat(
-                "The t-test produces a test statistic of ", 
-                unlist(results["statistic"]), 
-                " and a p-value of ",
-                unlist(results["p.value"]),
+                "As our p-value is less than 0.05, we reject the null hypothesis that the means are identical, and accept the alternative hypothesis that the means differ between ",
+                col_names_short[input$binary_dataset],
+                ".",
+                sep=""
+            )
+        } else {
+            cat(
+                "As our p-value is greater than 0.05, we accept the null hypothesis that the means are identical, and reject the alternative hypothesis that the means differ between ",
+                col_names_short[input$binary_dataset],
                 ".",
                 sep=""
             )
         }
     })
     
-    output$testConclusion2 <- renderPrint({
-        if (input$binary_dataset == "" | input$interval_dataset == "") {
-            cat("Please select both input variables...")
+    output$fisherOddsRatio <- renderPrint({
+        binary_name = names(which(binary_cols == input$binary_dataset))
+        binary2_name = names(which(binary_cols == input$binary2_dataset))
+        samples = df[!is.na(df[input$binary_dataset]) & !is.na(df[input$binary2_dataset]),]
+        
+        binary_type_1 = unique(samples[input$binary_dataset])[1,]
+        binary_type_2 = unique(samples[input$binary_dataset])[2,]
+        binary2_type_1 = unique(samples[input$binary2_dataset])[1,]
+        binary2_type_2 = unique(samples[input$binary2_dataset])[2,]
+        
+        samples_binary = unlist(samples[input$binary_dataset])
+        samples_binary2 = unlist(samples[input$binary2_dataset])
+        
+        con_table = table(samples_binary, samples_binary2)
+        con_table = con_table[2:1, 2:1]
+        
+        cat("Using the table above, the observed odds ratio is ", (con_table[1]*con_table[4]) / (con_table[2]*con_table[3]), ".", sep="")
+    })
+    
+    output$fisherContingencyTable <- render_tableHTML({
+        binary_name = names(which(binary_cols == input$binary_dataset))
+        binary2_name = names(which(binary_cols == input$binary2_dataset))
+        samples = df[!is.na(df[input$binary_dataset]) & !is.na(df[input$binary2_dataset]),]
+        
+        binary_type_1 = unique(samples[input$binary_dataset])[1,]
+        binary_type_2 = unique(samples[input$binary_dataset])[2,]
+        binary2_type_1 = unique(samples[input$binary2_dataset])[1,]
+        binary2_type_2 = unique(samples[input$binary2_dataset])[2,]
+        
+        samples_binary = unlist(samples[input$binary_dataset])
+        samples_binary2 = unlist(samples[input$binary2_dataset])
+        
+        con_table = table(samples_binary, samples_binary2)
+        con_table = con_table[2:1, 2:1]
+        
+        
+        con_df = data.frame(con_table[1:2],con_table[3:4], row.names=rownames(con_table))
+        names(con_df) = colnames(con_table)
+        con_df["Total",] = c(sum(con_df[1]), sum(con_df[2]))
+        con_df["Total"] = c(sum(con_df[1,]), sum(con_df[2,]), sum(con_df[3,]))
+        print(con_df)
+        
+        tableHTML(
+            con_df, 
+            second_headers = list(c(1,1,3), c("","", col_names_short[input$binary2_dataset])),
+            row_groups=list(c(3),c(col_names_short[input$binary_dataset])),
+            widths = c(100, 100, 100, 100, 100)
+        ) %>% 
+            #add_css_row(css = list('background-color', '#f2f2f2'), rows = c(1,2))
+            #add_css_row(css=list("margin", "10px")) %>%
+            add_css_column(css=list("font-weight", "bold"), columns=c("rownames","row_groups")) %>%
+            add_css_row(css=list("text-align", "center"), rows=1:5) %>%
+            add_css_header(css=list("text-align", "center"), headers=1:5) %>%
+            add_css_second_header(css=list("text-align", "center"), second_headers=1:5)
+            
+        
+    })
+    
+    fisherTestResults <- reactive({  
+        binary_name = names(which(binary_cols == input$binary_dataset))
+        binary2_name = names(which(binary_cols == input$binary2_dataset))
+        samples = df[!is.na(df[input$binary_dataset]) & !is.na(df[input$binary2_dataset]),]
+        binary_type_1 = unique(samples[input$binary_dataset])[1,]
+        binary_type_2 = unique(samples[input$binary_dataset])[2,]
+        binary2_type_1 = unique(samples[input$binary2_dataset])[1,]
+        binary2_type_2 = unique(samples[input$binary2_dataset])[2,]
+        samples_binary = unlist(samples[input$binary_dataset])
+        samples_binary2 = unlist(samples[input$binary2_dataset])
+        con_table = table(samples_binary, samples_binary2)
+        con_table = con_table[2:1, 2:1]
+        
+        fisher.test(con_table)
+    })
+    
+    output$fisherTestOutput <- renderPrint({
+        fisherTestResults()
+    })
+    
+    
+    output$fisherTestConclusion <- renderPrint({
+        results = fisherTestResults()
+        cat(
+            "The t-test produces a 95% confidence interval for the odds ratio of [", 
+            unlist(results["conf.int"])[1],
+            ", ",
+            unlist(results["conf.int"])[2],
+            "] and a p-value of ",
+            unlist(results["p.value"]),
+            ".",
+            sep=""
+        )
+    })
+    
+    output$fisherTestConclusion2 <- renderPrint({
+        results = fisherTestResults()
+        reject = unlist(results["p.value"]) < 0.05
+        if (unlist(results["p.value"]) < 0.05) {
+            cat("As our p-value is less than 0.05, we reject the null hypothesis that the odds ratio is 1, and accept the alternative hypothesis that the odds ratio is not 1.")
         } else {
-            results = testResults()
-            reject = unlist(results["p.value"]) < 0.05
-            if (unlist(results["p.value"]) < 0.05) {
-                cat(
-                    "As our p-value is less than 0.05, we reject the null hypothesis that the means are identical, and accept the alternative hypothesis that the means differ between ",
-                    col_names_short[input$binary_dataset],
-                    ".",
-                    sep=""
-                )
-            } else {
-                cat(
-                    "As our p-value is greater than 0.05, we accept the null hypothesis that the means are identical, and reject the alternative hypothesis that the means differ between ",
-                    col_names_short[input$binary_dataset],
-                    ".",
-                    sep=""
-                )
-            }
+            cat("As our p-value is greater than 0.05, we accept the null hypothesis that the odds ratio is 1, and reject the alternative hypothesis that the odds ratio is not 1.")
         }
     })
+    
 }
 
 # Run the application 
